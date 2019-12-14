@@ -1,4 +1,13 @@
-#[derive(Default)]
+use cpu;
+
 pub struct Chip8 {
-    ram: i32
+    ram: [u8; 4096]
+    cpu: Cpu
+}
+
+impl Chip8 {
+    fn::new() -> Chip8 {
+            ram: [0; 4096],
+            cpu: Cpu
+    }
 }

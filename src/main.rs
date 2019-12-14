@@ -10,7 +10,7 @@ fn main() {
 
     let rom = read_bin(rom_file_path);
 
-    println!("{:#X?}", rom);
+    println!("{:X?}", rom);
 }
 
 fn read_bin<P: AsRef<Path>>(path: P) -> Box<[u8]> {
