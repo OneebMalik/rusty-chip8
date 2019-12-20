@@ -1,5 +1,5 @@
 #[derive(Default)]
-struct cpu {
+pub struct Cpu {
     // V0-VF registers. VF register reserved for instruction flags.
     vx: [u8; 16],
     // index pointer
@@ -14,4 +14,7 @@ struct cpu {
     st: u8,
     // program counter
     stack: [u16; 16]
+}
+
+impl Cpu {
 }
