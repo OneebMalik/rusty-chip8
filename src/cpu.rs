@@ -1,4 +1,4 @@
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct Cpu {
     // V0-VF registers. VF register reserved for instruction flags.
     vx: [u8; 16],

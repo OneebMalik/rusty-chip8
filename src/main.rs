@@ -13,7 +13,8 @@ fn main() {
 
     println!("{:X?}", rom);
 
-    //let chip8 = chip8::Chip8::new();
+    let chip8 = chip8::Chip8::new();
+    println!("{:?}", chip8);
 }
 
 fn read_bin<P: AsRef<Path>>(path: P) -> Box<[u8]> {
