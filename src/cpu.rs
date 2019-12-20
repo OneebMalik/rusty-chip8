@@ -15,6 +15,3 @@ pub struct Cpu {
     // program counter
     stack: [u16; 16]
 }
-
-impl Cpu {
-}

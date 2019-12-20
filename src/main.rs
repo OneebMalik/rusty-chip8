@@ -3,12 +3,17 @@ use std::fs::File;
 use std::path::Path;
 use std::io::Read;
 
+mod chip8;
+mod cpu;
+
 fn main() {
     let rom_file_path = env::args().nth(1).unwrap();
 
     let rom = read_bin(rom_file_path);
 
     println!("{:X?}", rom);
+
+    //let chip8 = chip8::Chip8::new();
 }
 
 fn read_bin<P: AsRef<Path>>(path: P) -> Box<[u8]> {
