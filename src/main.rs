@@ -6,14 +6,17 @@ use std::io::Read;
 mod chip8;
 mod cpu;
 
+use chip8::Chip8;
+
 fn main() {
     let rom_file_path = env::args().nth(1).unwrap();
 
     let rom = read_bin(rom_file_path);
 
-    println!("{:X?}", rom);
+    let chip8 = Chip8::new();
 
-    let chip8 = chip8::Chip8::new();
+    Chip8::run();
+
     println!("{:?}", chip8);
 }
 

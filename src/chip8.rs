@@ -13,5 +13,10 @@ impl Chip8 {
                 cpu: Cpu::default()
             }
     }
-}
 
+    pub fn run() {
+        loop {
+            println!("test");
+        }
+    }
+}
