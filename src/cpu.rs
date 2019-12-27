@@ -15,7 +15,3 @@ pub struct Cpu {
     // program counter
     stack: [u16; 16]
 }
-
-//fn read_byte(u8) {
-    
-//}
