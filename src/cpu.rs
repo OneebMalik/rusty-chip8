@@ -32,31 +32,92 @@ impl Cpu {
 
         match opcode {
             0x0 => {
-                println!("opcode is: 0"); 
+                match instruction {
+                    // CLS
+                    0x00E0 => {
+                        println!("CLS")
+                    },
+                    // RET
+                    0x00EE => {
+                        println!("RET")
+                    },
+                    _ => panic!("Invalid instruction (0x{:X})", instruction)
+                }
             },
             0x1 => {
-                println!("opcode is: 1"); 
+                // JP addr
+                println!("JP addr")
             },
             0x2 => {
-                println!("opcode is: 2");
+                // CALL addr
+                println!("CALL addr")
             },
             0x3 => {
-                println!("opcode is: 3");
+                // SE Vx, byte
+                println!("SE Vx, byte")
             },
             0x4 => {
-                println!("opcode is: 4"); 
+                // SNE Vx, byte
+                println!("SNE Vx, byte")
             },
             0x5 => {
-                println!("opcode is: 5"); 
+                match n {
+                    // SE Vx, Vy
+                    0x0 => {
+                        println!("SE Vx, Vy")
+                    },
+                    _ => panic!("Invalid instruction (0x{:X})", instruction)
+                }
             },
             0x6 => {
-                println!("opcode is: 6"); 
+                // LD Vx, byte
+                println!("LD Vx, byte");
             },
             0x7 => {
-                println!("opcode is: 7"); 
+                // ADD Vx, byte
+                println!("ADD Vx, byte");
             },
             0x8 => {
-                println!("opcode is: 8"); 
+                // OR Vx, Vy
+                match n {
+                    // LD Vx, Vy
+                    0x0 => {
+                        println!("LD Vx, Vy")
+                    },
+                    // OR Vx, Vy
+                    0x1 => {
+                        println!("OR Vx, Vy")
+                    },
+                    // AND Vx, Vy
+                    0x2 => {
+                        println!("ADD Vx, Vy")
+                    },
+                    // XOR Vx, Vy
+                    0x3 => {
+                        println!("XOR Vx, Vy")
+                    },
+                    // ADD Vx, Vy
+                    0x4 => {
+                        println!("ADD Vx, Vy")
+                    },
+                    // SUB Vx, Vy
+                    0x5 => {
+                        println!("SUB Vx, Vy")
+                    },
+                    // SHR Vx {, Vy}
+                    0x6 => {
+                        println!("SHR Vx {{, Vy}}")
+                    },
+                    // SUBN Vx, Vy
+                    0x7 => {
+                        println!("SUBN Vx, Vy")
+                    },
+                    // SHL Vx {, Vy}
+                    0xE => {
+                        println!("SHL Vx {{, Vy}}")
+                    },
+                    _ => panic!("Invalid instruction (0x{:X})", instruction)
+                }
             },
             0x9 => {
                 println!("opcode is: 9"); 
