@@ -19,5 +19,14 @@ pub struct Cpu {
 impl Cpu {
     pub fn execute(&self, instruction: u16) {
         println!("instruction: 0x{:X}", instruction);
+
+        let nnn = instruction & 0x0FFF;
+        let n = instruction & 0x000F;
+        let x = instruction >> 8 & 0x000F;
+        let y = instruction >> 4 & 0x000F;
+        let kk = instruction & 0x00FF;
+
+        println!("nnn: {:X}, n: {:X}, x: {:X}, y: {:X}, kk: {:X}", nnn, n, x, y, kk);
+
     }
 }
