@@ -15,13 +15,8 @@ fn main() {
     }
 
     let rom_file_path = env::args().nth(1).unwrap();
-
     let mut chip8 = Chip8::new();
 
     chip8.load_rom(rom_file_path);
-
     chip8.run();
-
-    //println!("{:x?}", chip8);
-
 }
