@@ -20,8 +20,11 @@ impl Chip8 {
     }
 
     pub fn run(&self) {
-        loop {
-            println!("test");
+        // Iterate over every two bytes and run 16 bit instruction.
+        for x in (0..(self.rom.len()/2)).step_by(2) {
+            let instruction = (self.rom[x] as u16) << 8 | self.rom[x + 1] as u16;
+
+            self.cpu.execute(instruction);
         }
     }
 

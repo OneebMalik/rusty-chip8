@@ -20,7 +20,7 @@ fn main() {
 
     chip8.load_rom(rom_file_path);
 
-    //chip8.run();
+    chip8.run();
 
     //println!("{:x?}", chip8);
 
