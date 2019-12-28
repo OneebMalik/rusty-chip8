@@ -1,7 +1,7 @@
 use std::env;
-use std::fs::File;
-use std::path::Path;
-use std::io::Read;
+//use std::fs::File;
+//use std::path::Path;
+//use std::io::Read;
 
 mod chip8;
 mod cpu;
@@ -9,21 +9,19 @@ mod cpu;
 use chip8::Chip8;
 
 fn main() {
+    
+    if env::args().nth(1) == None {
+        panic!("No ROM filepath provided");
+    }
+
     let rom_file_path = env::args().nth(1).unwrap();
 
-    let rom = read_bin(rom_file_path);
+    let mut chip8 = Chip8::new();
 
-    let chip8 = Chip8::new();
+    chip8.load_rom(rom_file_path);
 
-    Chip8::run();
+    //chip8.run();
 
-    println!("{:?}", chip8);
-}
+    //println!("{:x?}", chip8);
 
-fn read_bin<P: AsRef<Path>>(path: P) -> Box<[u8]> {
-    let mut file = File::open(path).unwrap();
-    let mut file_buf = Vec::new();
-
-    file.read_to_end(&mut file_buf).unwrap();
-    file_buf.into_boxed_slice()
 }
