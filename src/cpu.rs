@@ -173,11 +173,11 @@ impl Cpu {
                     },
                     // LD ST, Vx
                     0x18 => {
-                        prinln!("LD ST, Vx")
+                        println!("LD ST, Vx")
                     },
                     // ADD I, Vx
                     0x1E => {
-                        prinln!("ADD I, Vx")
+                        println!("ADD I, Vx")
                     },
                     // LD F, Vx
                     0x29 => {
