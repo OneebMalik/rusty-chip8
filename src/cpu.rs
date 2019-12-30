@@ -120,25 +120,83 @@ impl Cpu {
                 }
             },
             0x9 => {
-                println!("opcode is: 9"); 
+                match n {
+                    // SNE Vx, Vy
+                    0x0 => {
+                        println!("SNE Vx, Vy")
+                    },
+                    _ => panic!("Invalid instruction (0x{:X})", instruction)
+                }
             },
             0xa => {
-                println!("opcode is: A");
+                // LD I, addr
+                println!("LD I, addr");
             },
             0xb => {
-                println!("opcode is: B"); 
+                // JP V0, addr
+                println!("JP V0, addr");
             },
             0xc => {
-                println!("opcode is: C"); 
+                // RND Vx, byte
+                println!("RND Vx, byte");
             },
             0xd => {
-                println!("opcode is: D"); 
+                // DRW Vx, Vy, nibble
+                println!("DRW Vx, Vy, nibble");
             },
             0xe => {
-                println!("opcode is: E"); 
+                match kk {
+                    // SKP Vx
+                    0x9E => {
+                        println!("SKP Vx")
+                    },
+                    // SKNP Vx
+                    0xA1 => {
+                        println!("SKNP Vx")
+                    },
+                    _ => panic!("Invalid instruction (0x{:X}).", instruction)       
+                }
             },
             0xf => {
-                println!("opcode is: F"); 
+                match kk {
+                    // LD Vx, DT 
+                    0x07 => {
+                        println!("LD Vx, DT")
+                    },
+                    // LD Vx, K
+                    0x0A => {
+                        println!("LD Vx, K")
+                    },
+                    // LD DT, Vx
+                    0x15 => {
+                        println!("LD DT, Vx")
+                    },
+                    // LD ST, Vx
+                    0x18 => {
+                        prinln!("LD ST, Vx")
+                    },
+                    // ADD I, Vx
+                    0x1E => {
+                        prinln!("ADD I, Vx")
+                    },
+                    // LD F, Vx
+                    0x29 => {
+                        println!("LD F, Vx")
+                    },
+                    // LD B, Vx
+                    0x33 => {
+                        println!("LD B, Vx")
+                    },
+                    // LD [I], Vx
+                    0x55 => {
+                        println!("LD [I], Vx")
+                    },
+                    // LD Vx, [I]
+                    0x65 => {
+                        println!("LD Vx, [I]")
+                    },
+                    _ => panic!("Invalid instruction (0x{:X}).", instruction)
+                }
             },
             _ => panic!("Invalid instruction (0x{:X}).", instruction)
         }
