@@ -17,6 +17,7 @@ pub struct Cpu {
 }
 
 impl Cpu {
+
     pub fn execute(&self, instruction: u16) {
         println!("instruction: 0x{:X}", instruction);
 
