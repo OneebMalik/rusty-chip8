@@ -3,6 +3,8 @@ use std::fs::File;
 use std::path::Path;
 use std::io::Read;
 
+const START_ADDR: u16 = 0x200;
+
 const CHAR_SPRITES: [[u8; 5]; 16] = [
     /*0*/ [0xf0, 0x90, 0x90, 0x90, 0xf0],
     /*1*/ [0x20, 0x60, 0x20, 0x20, 0x70],
@@ -39,11 +41,17 @@ impl Chip8 {
     }
 
     pub fn start(&mut self) {
-        for addr in (0x200..self.rom_size).step_by(2) {
-            //let instruction = (self.ram[i] as u16) << 8 | self.ram[i + 1] as u16;
-            self.cpu.pc = addr as u16;
+        // TODO: Create constructor cpu function to set pc to 0x200
+        self.cpu.pc = START_ADDR;
+        loop {
             self.cpu.execute(&self.ram);
+            self.cpu.pc += 2;
         }
+        //for addr in (0x200..self.rom_size).step_by(2) {
+            //let instruction = (self.ram[i] as u16) << 8 | self.ram[i + 1] as u16;
+        //    self.cpu.pc = addr as u16;
+        //    self.cpu.execute(&self.ram);
+        //}
     }
 
     pub fn load_rom<P: AsRef<Path>>(&mut self, path: P) {

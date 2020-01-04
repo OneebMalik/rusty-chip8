@@ -20,14 +20,14 @@ impl Cpu {
 
     pub fn execute(&mut self, ram: &Vec<u8>) {
 
-        let instruction = (ram[self.pc as usize] as u16) << 8 | ram[(self.pc as usize) + 1  as usize] as u16;
+        let instruction = (ram[self.pc as usize] as u16) << 8 | ram[(self.pc + 1)  as usize] as u16;
 
-        println!("\n\ninstruction: 0x{:X}", instruction);
+        println!("\n\ninstruction(0x{:X}): 0x{:X}", self.pc, instruction);
 
         let nnn = instruction & 0x0FFF;
-        let n = instruction & 0x000F;
-        let x = instruction >> 8 & 0x000F;
-        let y = instruction >> 4 & 0x000F;
+        let n = (instruction & 0x000F) as u8;
+        let x = (instruction >> 8 & 0x000F) as u8;
+        let y = (instruction >> 4 & 0x000F) as u8;
         let kk = instruction & 0x00FF;
 
         let opcode = instruction >> 12 & 0x000F;
@@ -63,6 +63,7 @@ impl Cpu {
             },
             0x3 => {
                 // SE Vx, byte
+
                 panic!("SE Vx, byte")
             },
             0x4 => {
@@ -80,7 +81,8 @@ impl Cpu {
             },
             0x6 => {
                 // LD Vx, byte
-                panic!("LD Vx, byte");
+                self.vx[x as usize] = y;
+                println!("LD Vx, byte {:?}", self.vx);
             },
             0x7 => {
                 // ADD Vx, byte
@@ -139,7 +141,8 @@ impl Cpu {
             },
             0xa => {
                 // LD I, addr
-                panic!("LD I, addr");
+                println!("LD I, addr");
+                self.i = nnn;
             },
             0xb => {
                 // JP V0, addr
@@ -210,6 +213,7 @@ impl Cpu {
             _ => panic!("Invalid instruction (0x{:X}).", instruction)
         }
 
+        //self.pc += 2;
         println!("\n");
     }
 }
