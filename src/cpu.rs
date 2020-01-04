@@ -20,7 +20,7 @@ impl Cpu {
 
     pub fn execute(&mut self, ram: &Vec<u8>) {
 
-        let instruction = (ram[self.pc as usize] as u16) << 8 | ram[(self.pc as usize) as usize] as u16;
+        let instruction = (ram[self.pc as usize] as u16) << 8 | ram[(self.pc as usize) + 1  as usize] as u16;
 
         println!("\n\ninstruction: 0x{:X}", instruction);
 

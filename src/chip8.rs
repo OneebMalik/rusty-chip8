@@ -62,9 +62,9 @@ impl Chip8 {
 
         //println!("RAM: {:X?}, {:X?}, {:X?}, {:X?}", self.ram[0x702], self.ram[0x703], self.ram[0x704], self.ram[0x203]);
 
-        //for i in 0x200..0x703 {
-        //    print!("{:X?}: {:X?}\t", i, self.ram[i]);
-        //}
+        for i in 0x200..0x703 {
+            print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
+        }
 
         //println!("\n");
     }
