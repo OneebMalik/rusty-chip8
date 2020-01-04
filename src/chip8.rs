@@ -38,10 +38,11 @@ impl Chip8 {
             }
     }
 
-    pub fn start(&self) {
+    pub fn start(&mut self) {
         for i in (0x200..self.rom_size).step_by(2) {
             let instruction = (self.ram[i] as u16) << 8 | self.ram[i + 1] as u16;
-            self.cpu.execute(instruction);
+            self.cpu.pc = instruction;
+            self.cpu.execute();
         }
     }
 

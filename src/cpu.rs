@@ -1,3 +1,5 @@
+use super::chip8;
+
 #[derive(Default, Debug)]
 pub struct Cpu {
     // V0-VF registers. VF register reserved for instruction flags.
@@ -5,9 +7,9 @@ pub struct Cpu {
     // index pointer
     i: u16,
     // program counter
-    pc: u16,
+    pub pc: u16,
     // stack pointer
-    sp: u8,
+    sp: usize,
     // delay timer
     dt: u8,
     // sound timer
@@ -18,7 +20,10 @@ pub struct Cpu {
 
 impl Cpu {
 
-    pub fn execute(&self, instruction: u16) {
+    pub fn execute(&mut self) {
+
+        let instruction = self.pc as u16;
+
         println!("instruction: 0x{:X}", instruction);
 
         let nnn = instruction & 0x0FFF;
@@ -47,7 +52,11 @@ impl Cpu {
             },
             0x1 => {
                 // JP addr
-                println!("JP addr")
+                println!("JP addr");
+                self.stack[self.sp] = nnn;
+                self.sp += 1;
+                self.pc = chip8::Chip8::ram[nnn];
+                self.execute();
             },
             0x2 => {
                 // CALL addr
