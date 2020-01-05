@@ -5,6 +5,7 @@ use std::env;
 
 mod chip8;
 mod cpu;
+mod display;
 
 use chip8::Chip8;
 
@@ -13,6 +14,8 @@ fn main() {
     if env::args().nth(1) == None {
         panic!("No ROM filepath provided");
     }
+
+    display::draw();
 
     let rom_file_path = env::args().nth(1).unwrap();
     let mut chip8 = Chip8::new();
