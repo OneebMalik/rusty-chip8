@@ -1,7 +1,8 @@
-use super::cpu::Cpu;
+use super::cpu;
 use std::fs::File;
 use std::path::Path;
 use std::io::Read;
+use super::display;
 
 const CHAR_SPRITES: [[u8; 5]; 16] = [
     /*0*/ [0xf0, 0x90, 0x90, 0x90, 0xf0],
@@ -25,30 +26,28 @@ const CHAR_SPRITES: [[u8; 5]; 16] = [
 #[derive(Debug)]
 pub struct Chip8 {
     ram: Vec<u8>,
-    cpu: Cpu,
-    rom_size: usize
+    cpu: cpu::Cpu,
+    rom_size: usize,
+    display: display::Display
 }
 
 impl Chip8 {
     pub fn new() -> Chip8 {
             Chip8 {
                 ram: vec![0; 4096],
-                cpu: Cpu::new(),
-                rom_size: 0
+                cpu: cpu::Cpu::default(),
+                rom_size: 0,
+                display: display::Display::draw()
             }
     }
 
     pub fn start(&mut self) {
-       // self.cpu.pc = START_ADDR;
+       self.display.event_loop();
+       self.display.draw_sprite(CHAR_SPRITES[0].to_vec(), 5, 5);
         loop {
             self.cpu.execute(&self.ram);
             self.cpu.pc += 2;
         }
-        //for addr in (0x200..self.rom_size).step_by(2) {
-            //let instruction = (self.ram[i] as u16) << 8 | self.ram[i + 1] as u16;
-        //    self.cpu.pc = addr as u16;
-        //    self.cpu.execute(&self.ram);
-        //}
     }
 
     pub fn load_rom<P: AsRef<Path>>(&mut self, path: P) {
@@ -59,18 +58,12 @@ impl Chip8 {
 
         self.rom_size = file_buf.len();
 
-        //println!("ROM SIZE: {}", self.rom_size);
-
         for (index, _) in file_buf.iter().enumerate() {
             self.ram[0x200+index] = file_buf[index];
         }
 
-        //println!("RAM: {:X?}, {:X?}, {:X?}, {:X?}", self.ram[0x702], self.ram[0x703], self.ram[0x704], self.ram[0x203]);
-
-        for i in 0x200..0x703 {
-            print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
-        }
-
-        //println!("\n");
+        //for i in 0x200..0x703 {
+        //    print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
+        //}
     }
 }

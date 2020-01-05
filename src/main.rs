@@ -15,8 +15,6 @@ fn main() {
         panic!("No ROM filepath provided");
     }
 
-    display::draw();
-
     let rom_file_path = env::args().nth(1).unwrap();
     let mut chip8 = Chip8::new();
 
