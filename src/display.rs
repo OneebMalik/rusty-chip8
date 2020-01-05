@@ -62,8 +62,9 @@ pub fn draw() {
                 _ => {}
             }
         }
-
-        canvas.present();
-        ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
+}
+
+pub fn draw_sprite(sprite: Vec<u8>, x: i32, y: i32) {
+    
 }

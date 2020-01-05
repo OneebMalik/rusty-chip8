@@ -22,7 +22,7 @@ impl Cpu {
 
         let instruction = (ram[self.pc as usize] as u16) << 8 | ram[(self.pc + 1)  as usize] as u16;
 
-        println!("\n\ninstruction(0x{:X}): 0x{:X}", self.pc, instruction);
+        println!("\ninstruction(0x{:X}): 0x{:X}", self.pc, instruction);
 
         let nnn = instruction & 0x0FFF;
         let n = (instruction & 0x000F) as u8;
@@ -154,7 +154,18 @@ impl Cpu {
             },
             0xd => {
                 // DRW Vx, Vy, nibble
-                panic!("DRW Vx, Vy, nibble");
+                println!("DRW Vx, Vy, nibble");
+
+                let sprite_size = n;
+
+                let mut sprite: Vec<u8> = vec![0; n as usize];
+
+                // Read 'n' bytes from memory starting from address in I register.
+                for index in 0..sprite_size-1 {
+                    sprite[index as usize] = ram[(self.i + index as u16) as usize];
+                }
+
+                println!("SPRITE DATA: {:X?}", sprite);
             },
             0xe => {
                 match kk {
