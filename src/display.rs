@@ -31,7 +31,7 @@ const WINDOW_HEIGHT: u32 = 32;
 
 const SCALE_FACTOR: u32 = 20;
  
-pub fn draw() {
+pub fn draw() -> &Canvas {
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
  

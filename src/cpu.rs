@@ -1,4 +1,8 @@
-#[derive(Default, Debug)]
+use sdl2::render::Canvas;
+
+const START_ADDR: u16 = 0x200;
+
+#[derive(Debug)]
 pub struct Cpu {
     // V0-VF registers. VF register reserved for instruction flags.
     vx: [u8; 16],
@@ -13,10 +17,20 @@ pub struct Cpu {
     // sound timer
     st: u8,
     // program counter
-    stack: [u16; 16]
+    stack: [u16; 16],
+
+    canvas: &Canvas
 }
 
 impl Cpu {
+
+    pub fn new() {
+        Cpu {
+            vx: [0; 16],
+
+            pc: START_ADDR
+        }
+    }
 
     pub fn execute(&mut self, ram: &Vec<u8>) {
 
