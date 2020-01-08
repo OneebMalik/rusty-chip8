@@ -1,3 +1,5 @@
+extern crate sdl2;
+
 use std::fmt;
 
 use sdl2::Sdl;
@@ -7,6 +9,8 @@ use sdl2::pixels::Color;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::rect::Rect;
+
+use std::{thread, time};
 
 const WINDOW_WIDTH: u32 = 64;
 const WINDOW_HEIGHT: u32 = 32;
@@ -28,18 +32,19 @@ impl Display {
             .build()
             .unwrap();
      
-        let mut canv = window.into_canvas().build().unwrap();
+        let mut canvas = window.into_canvas().build().unwrap();
      
-        canv.set_draw_color(Color::RGB(0, 0, 0));
-        canv.clear();
+        canvas.set_draw_color(Color::RGB(0, 0, 0));
+        canvas.clear();
+        canvas.present();
 
         Display {
-            canvas: canv,
+            canvas,
             context: sdl_context
         }
     }
 
-    pub fn event_loop(&self) { 
+    pub fn event_loop(&mut self) { 
         let mut event_pump = self.context.event_pump().unwrap();
         let mut i = 0;
         'running: loop {
@@ -51,7 +56,22 @@ impl Display {
                     },
                     _ => {}
                 }
-            }
+            }       
+
+            self.canvas.set_draw_color(Color::RGB(255, 255, 255));
+
+            self.canvas.fill_rect(Rect::new(32*SCALE_FACTOR as i32, 16*SCALE_FACTOR as i32, SCALE_FACTOR as u32, SCALE_FACTOR as u32));
+            self.canvas.present();
+
+            thread::sleep(time::Duration::from_millis(50));
+
+            self.canvas.set_draw_color(Color::RGB(0, 0, 0));
+
+            self.canvas.fill_rect(Rect::new(32*SCALE_FACTOR as i32, 16*SCALE_FACTOR as i32, SCALE_FACTOR as u32, SCALE_FACTOR as u32));
+            self.canvas.present();
+
+            thread::sleep(time::Duration::from_millis(50));
+
         }
     }
 
