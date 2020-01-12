@@ -18,12 +18,19 @@ const WINDOW_HEIGHT: u32 = 32;
 const SCALE_FACTOR: u32 = 20;
 
 pub struct Display {
+    context: Sdl,
     canvas: Canvas<Window>,
-    context: Sdl
+    frame_buffer: Vec<Sprite>
+}
+
+pub struct Sprite {
+    data: Vec<u8>,
+    x: i32,
+    y: i32
 }
 
 impl Display {
-    pub fn draw() -> Display {
+    pub fn draw() -> Self {
         let sdl_context = sdl2::init().unwrap();
         let video_subsystem = sdl_context.video().unwrap();
      
@@ -40,7 +47,8 @@ impl Display {
 
         Display {
             canvas,
-            context: sdl_context
+            context: sdl_context,
+            frame_buffer: Vec::default()
         }
     }
 
@@ -75,11 +83,21 @@ impl Display {
         }
     }
 
+    // Get sprite data from frame buffer.
     pub fn draw_sprite(&mut self, sprite: Vec<u8>, x: i32, y: i32) {
         self.canvas.set_draw_color(Color::RGB(255, 255, 255));
 
         self.canvas.fill_rect(Rect::new(32*SCALE_FACTOR as i32, 16*SCALE_FACTOR as i32, SCALE_FACTOR as u32, SCALE_FACTOR as u32));
         self.canvas.present();
+    }
+
+    // Add sprite data to frame buffer.
+    pub fn push_frame(&mut self, data: Vec<u8>, x: i32, y: i32) {
+        self.frame_buffer.push(Sprite {
+            data,
+            x,
+            y
+        });
     }
 }
 
