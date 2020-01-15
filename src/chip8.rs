@@ -36,20 +36,17 @@ pub struct Chip8 {
 
 impl Chip8 {
     pub fn new() -> Chip8 {
-
-        let mut frame_buffer: Vec<Sprite> = Vec::new();
-
         Chip8 {
             ram: vec![0; 4096],
-            cpu: cpu::Cpu::new(&frame_buffer),
+            cpu: cpu::Cpu::default(),
             rom_size: 0,
-            display: display::Display::new(&frame_buffer)
+            display: display::Display::draw()
         }
     }
 
     pub fn start(&mut self) {
         // TODO: move to cpu.rs
-        //self.cpu.pc = PROGRAM_START_ADDR;
+        self.cpu.pc = PROGRAM_START_ADDR;
         
         self.display.event_loop();
         //self.display.draw_sprite(CHAR_SPRITES[0].to_vec(), 5, 5);

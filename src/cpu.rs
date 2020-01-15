@@ -1,3 +1,5 @@
+use super::sprite;
+
 const START_ADDR: u16 = 0x200;
 
 #[derive(Default, Debug)]
@@ -16,6 +18,8 @@ pub struct Cpu {
     st: u8,
     // program counter
     stack: [u16; 16],
+
+    sprite_buffer: Vec<sprite::Sprite>
 
 }
 
@@ -167,8 +171,6 @@ impl Cpu {
                 for index in 0..sprite_size-1 {
                     sprite[index as usize] = ram[(self.i + index as u16) as usize];
                 }
-
-                super::display::push_frame(sprite, x, y);
 
                 println!("SPRITE DATA: {:X?}", sprite);
             },

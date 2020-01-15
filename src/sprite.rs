@@ -1,3 +1,5 @@
+use std::fmt;
+
 pub struct Sprite {
     data: Vec<u8>,
     x: i32,
