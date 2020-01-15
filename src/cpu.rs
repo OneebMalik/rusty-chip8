@@ -168,6 +168,8 @@ impl Cpu {
                     sprite[index as usize] = ram[(self.i + index as u16) as usize];
                 }
 
+                super::display::push_frame(sprite, x, y);
+
                 println!("SPRITE DATA: {:X?}", sprite);
             },
             0xe => {

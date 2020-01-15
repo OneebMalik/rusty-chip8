@@ -23,12 +23,6 @@ pub struct Display {
     frame_buffer: Vec<Sprite>
 }
 
-pub struct Sprite {
-    data: Vec<u8>,
-    x: i32,
-    y: i32
-}
-
 impl Display {
     pub fn draw() -> Self {
         let sdl_context = sdl2::init().unwrap();
@@ -98,6 +92,9 @@ impl Display {
             x,
             y
         });
+
+        println!("HERE IT IS: ");
+        println!("{:?}", self.frame_buffer);
     }
 }
 

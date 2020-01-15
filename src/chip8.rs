@@ -3,6 +3,7 @@ use std::fs::File;
 use std::path::Path;
 use std::io::Read;
 use super::display;
+use super::sprite;
 
 const PROGRAM_START_ADDR: u16 = 0x200;
 
@@ -35,19 +36,23 @@ pub struct Chip8 {
 
 impl Chip8 {
     pub fn new() -> Chip8 {
-            Chip8 {
-                ram: vec![0; 4096],
-                cpu: cpu::Cpu::default(),
-                rom_size: 0,
-                display: display::Display::draw()
-            }
+
+        let mut frame_buffer: Vec<Sprite> = Vec::new();
+
+        Chip8 {
+            ram: vec![0; 4096],
+            cpu: cpu::Cpu::new(&frame_buffer),
+            rom_size: 0,
+            display: display::Display::new(&frame_buffer)
+        }
     }
 
     pub fn start(&mut self) {
-        self.cpu.pc = PROGRAM_START_ADDR;
+        // TODO: move to cpu.rs
+        //self.cpu.pc = PROGRAM_START_ADDR;
         
         self.display.event_loop();
-        self.display.draw_sprite(CHAR_SPRITES[0].to_vec(), 5, 5);
+        //self.display.draw_sprite(CHAR_SPRITES[0].to_vec(), 5, 5);
         loop {
             self.cpu.execute(&self.ram);
             self.cpu.pc += 2;

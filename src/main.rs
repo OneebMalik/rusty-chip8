@@ -6,6 +6,7 @@ use std::env;
 mod chip8;
 mod cpu;
 mod display;
+mod sprite;
 
 use chip8::Chip8;
 
