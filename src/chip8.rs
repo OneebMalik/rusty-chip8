@@ -4,6 +4,8 @@ use std::path::Path;
 use std::io::Read;
 use super::display;
 
+const PROGRAM_START_ADDR: u16 = 0x200;
+
 const CHAR_SPRITES: [[u8; 5]; 16] = [
     /*0*/ [0xf0, 0x90, 0x90, 0x90, 0xf0],
     /*1*/ [0x20, 0x60, 0x20, 0x20, 0x70],
@@ -42,8 +44,10 @@ impl Chip8 {
     }
 
     pub fn start(&mut self) {
-       self.display.event_loop();
-       self.display.draw_sprite(CHAR_SPRITES[0].to_vec(), 5, 5);
+        self.cpu.pc = PROGRAM_START_ADDR;
+        
+        self.display.event_loop();
+        self.display.draw_sprite(CHAR_SPRITES[0].to_vec(), 5, 5);
         loop {
             self.cpu.execute(&self.ram);
             self.cpu.pc += 2;
