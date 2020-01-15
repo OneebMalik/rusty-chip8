@@ -1,13 +1,13 @@
 use std::fmt;
 
 pub struct Sprite {
-    data: Vec<u8>,
-    x: i32,
-    y: i32
+    pub data: Vec<u8>,
+    pub x: i32,
+    pub y: i32
 }
 
 impl fmt::Debug for Sprite {
     fn fmt(&self, f:&mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Sprite")
+        write!(f, "{{ data: {:X?}, x: {}, y: {} }}", self.data, self.x, self.y)
     }
 }

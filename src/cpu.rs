@@ -19,8 +19,9 @@ pub struct Cpu {
     // program counter
     stack: [u16; 16],
 
-    sprite_buffer: Vec<sprite::Sprite>
+    sprite_buffer: Vec<sprite::Sprite>,
 
+    sprite_queued: bool
 }
 
 impl Cpu {
@@ -172,7 +173,15 @@ impl Cpu {
                     sprite[index as usize] = ram[(self.i + index as u16) as usize];
                 }
 
-                println!("SPRITE DATA: {:X?}", sprite);
+                self.sprite_buffer.push(sprite::Sprite {
+                    data: sprite,
+                    x: x as i32,
+                    y: y as i32
+                });
+                
+                self.sprite_queued = true;
+
+                println!("SPRITE DATA: {:X?}", self.sprite_buffer);
             },
             0xe => {
                 match kk {
