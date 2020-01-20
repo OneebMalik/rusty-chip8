@@ -1,5 +1,7 @@
 use super::sprite;
 
+use std::collections::VecDeque;
+
 const START_ADDR: u16 = 0x200;
 
 #[derive(Default, Debug)]
@@ -19,9 +21,9 @@ pub struct Cpu {
     // program counter
     stack: [u16; 16],
 
-    sprite_buffer: Vec<sprite::Sprite>,
+    pub sprite_buffer: VecDeque<sprite::Sprite>,
 
-    sprite_queued: bool
+    pub sprite_queued: bool
 }
 
 impl Cpu {
@@ -161,7 +163,7 @@ impl Cpu {
                 panic!("RND Vx, byte");
             },
             0xd => {
-                // DRW Vx, Vy, nibble
+                //DRW Vx, Vy, nibble
                 println!("DRW Vx, Vy, nibble");
 
                 let sprite_size = n;
@@ -173,7 +175,7 @@ impl Cpu {
                     sprite[index as usize] = ram[(self.i + index as u16) as usize];
                 }
 
-                self.sprite_buffer.push(sprite::Sprite {
+                self.sprite_buffer.push_back(sprite::Sprite {
                     data: sprite,
                     x: x as i32,
                     y: y as i32

@@ -1,9 +1,10 @@
-use super::cpu;
 use std::fs::File;
 use std::path::Path;
 use std::io::Read;
+use std::thread;
+
 use super::display;
-use super::sprite;
+use super::cpu;
 
 const PROGRAM_START_ADDR: u16 = 0x200;
 
@@ -47,12 +48,16 @@ impl Chip8 {
     pub fn start(&mut self) {
         // TODO: move to cpu.rs
         self.cpu.pc = PROGRAM_START_ADDR;
-        
-        self.display.event_loop();
-        //self.display.draw_sprite(CHAR_SPRITES[0].to_vec(), 5, 5);
+
         loop {
-            self.cpu.execute(&self.ram);
-            self.cpu.pc += 2;
+
+            //if self.cpu.sprite_queued {
+            //    self.display.sprite_buffer.push_back(self.cpu.sprite_buffer.pop_front().unwrap());
+            //}
+            println!("drawing");
+
+            //self.cpu.execute(&self.ram);
+            //self.cpu.pc += 2;
         }
     }
 

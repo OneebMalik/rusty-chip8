@@ -2,6 +2,8 @@ extern crate sdl2;
 
 use std::fmt;
 
+use std::collections::VecDeque;
+
 use sdl2::Sdl;
 use sdl2::render::Canvas;
 use sdl2::video::Window;
@@ -12,7 +14,7 @@ use sdl2::rect::Rect;
 
 use super::sprite;
 
-use std::{thread, time};
+//use std::{thread, time};
 
 const WINDOW_WIDTH: u32 = 64;
 const WINDOW_HEIGHT: u32 = 32;
@@ -21,13 +23,16 @@ const SCALE_FACTOR: u32 = 20;
 
 pub struct Display {
     context: Sdl,
-    canvas: Canvas<Window>
+    pub canvas: Canvas<Window>,
+    pub sprite_buffer: VecDeque<sprite::Sprite>
 }
 
 impl Display {
     pub fn draw() -> Self {
         let sdl_context = sdl2::init().unwrap();
         let video_subsystem = sdl_context.video().unwrap();
+
+        let sprite_buffer = VecDeque::new();
      
         let window = video_subsystem.window("Rusty CHIP-8", WINDOW_WIDTH * SCALE_FACTOR, WINDOW_HEIGHT * SCALE_FACTOR)
             .position_centered()
@@ -42,7 +47,8 @@ impl Display {
 
         Display {
             canvas,
-            context: sdl_context
+            context: sdl_context,
+            sprite_buffer
         }
     }
 
@@ -60,24 +66,15 @@ impl Display {
                 }
             }       
 
-            self.canvas.set_draw_color(Color::RGB(255, 255, 255));
-
-            self.canvas.fill_rect(Rect::new(32*SCALE_FACTOR as i32, 16*SCALE_FACTOR as i32, SCALE_FACTOR as u32, SCALE_FACTOR as u32));
-            self.canvas.present();
-
-            thread::sleep(time::Duration::from_millis(50));
-
-            self.canvas.set_draw_color(Color::RGB(0, 0, 0));
-
-            self.canvas.fill_rect(Rect::new(32*SCALE_FACTOR as i32, 16*SCALE_FACTOR as i32, SCALE_FACTOR as u32, SCALE_FACTOR as u32));
-            self.canvas.present();
-
-            thread::sleep(time::Duration::from_millis(50));
-
+            if !self.sprite_buffer.is_empty() {
+                println!("were in");
+                let sprite = self.sprite_buffer.pop_front().unwrap();
+                self.draw_sprite(sprite);
+            }
         }
     }
 
-    pub fn draw_sprite(&mut self, sprite: sprite::Sprite, x: i32, y: i32) {
+    pub fn draw_sprite(&mut self, sprite: sprite::Sprite) {
         self.canvas.set_draw_color(Color::RGB(255, 255, 255));
 
         self.canvas.fill_rect(Rect::new(32*SCALE_FACTOR as i32, 16*SCALE_FACTOR as i32, SCALE_FACTOR as u32, SCALE_FACTOR as u32));
