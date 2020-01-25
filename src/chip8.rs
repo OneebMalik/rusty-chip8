@@ -1,10 +1,14 @@
 use std::fs::File;
 use std::path::Path;
 use std::io::Read;
-use std::thread;
+use std::fmt;
 
-use super::display;
 use super::cpu;
+use super::display;
+
+use std::collections::VecDeque;
+
+use std::{thread, time};
 
 const PROGRAM_START_ADDR: u16 = 0x200;
 
@@ -27,7 +31,6 @@ const CHAR_SPRITES: [[u8; 5]; 16] = [
     /*f*/ [0xf0, 0x80, 0xf0, 0x80, 0x80]
 ];
 
-#[derive(Debug)]
 pub struct Chip8 {
     ram: Vec<u8>,
     cpu: cpu::Cpu,
@@ -49,12 +52,27 @@ impl Chip8 {
         // TODO: move to cpu.rs
         self.cpu.pc = PROGRAM_START_ADDR;
 
-        loop {
+        let mut counter = 0;
+        let ten_millis = time::Duration::from_millis(300);
+
+        'main: loop {
+
+            // counter += 1;
+            // if counter > 10 {
+            //     break;
+            // }
+
+            // thread::sleep(ten_millis);
+
+            if self.display.event_poll() == "quit" {
+                break 'main;
+            }
+
+            self.display.test();
 
             //if self.cpu.sprite_queued {
             //    self.display.sprite_buffer.push_back(self.cpu.sprite_buffer.pop_front().unwrap());
             //}
-            println!("drawing");
 
             //self.cpu.execute(&self.ram);
             //self.cpu.pc += 2;

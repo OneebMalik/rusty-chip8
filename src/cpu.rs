@@ -20,10 +20,10 @@ pub struct Cpu {
     st: u8,
     // program counter
     stack: [u16; 16],
-
-    pub sprite_buffer: VecDeque<sprite::Sprite>,
-
-    pub sprite_queued: bool
+    //sprite queued
+    sprite_queued: bool,
+    // sprite buffer
+    sprite_buffer: VecDeque<sprite::Sprite>
 }
 
 impl Cpu {
