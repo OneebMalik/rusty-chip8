@@ -38,7 +38,7 @@ impl Cpu {
         let n = (instruction & 0x000F) as u8;
         let x = (instruction >> 8 & 0x000F) as u8;
         let y = (instruction >> 4 & 0x000F) as u8;
-        let kk = instruction & 0x00FF;
+        let kk = (instruction & 0x00FF) as u8;
 
         let opcode = instruction >> 12 & 0x000F;
 
@@ -96,7 +96,8 @@ impl Cpu {
             },
             0x7 => {
                 // ADD Vx, byte
-                panic!("ADD Vx, byte");
+                self.vx[x as usize] = self.vx[x as usize] + kk;
+                println!("ADD Vx, byte");
             },
             0x8 => {
                 // OR Vx, Vy

@@ -61,7 +61,7 @@ impl Chip8 {
 
             if self.cpu.sprite_queued {
                self.display.draw_sprite(self.cpu.sprite_buffer.pop_front().unwrap());
-                self.cpu.pc -= 2;
+               self.cpu.sprite_queued = false;
             }
 
             self.cpu.execute(&self.ram);
