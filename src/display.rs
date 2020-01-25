@@ -72,6 +72,8 @@ impl Display {
 
         println!("SPRITE DATA: {:X?}", sprite.data);
 
+        // TODO: Wrap around with mod and XOR and collisions.
+
         for (index, val) in sprite.data.iter().enumerate() {
             for bit in 0..7 {
                 if (val >> bit) as u8 & 0x01 == 1u8 {
