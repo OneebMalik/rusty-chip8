@@ -60,21 +60,24 @@ impl Cpu {
             },
             0x1 => {
                 // JP addr
-                println!("JP addr");
-                self.stack[self.sp] = self.pc;
-                self.sp += 1;
+                // println!("JP addr");
+                // self.stack[self.sp] = self.pc;
+                // self.sp += 1;
                 self.pc = nnn as u16;
 
-                self.pc -= 2;
+                // self.pc -= 2;
 
+                println!("JP addr");
                 // self.execute(ram);
             },
             0x2 => {
-                // CALL addr
-                panic!("CALL addr")
+                self.stack[self.sp] = self.pc;
+                self.sp += 1;
+                println!("CALL addr");
             },
             0x3 => {
                 // SE Vx, byte
+                println!("SE Vx, byte");
                 if (self.vx[x as usize] == kk) {
                     self.pc += 2;
                 }
@@ -95,7 +98,7 @@ impl Cpu {
             0x6 => {
                 // LD Vx, byte
                 self.vx[x as usize] = kk;
-                println!("LD Vx, byte {:?}", self.vx);
+                println!("LD Vx, byte {:x?}", self.vx);
             },
             0x7 => {
                 // ADD Vx, byte
@@ -222,6 +225,7 @@ impl Cpu {
                     0x1E => {
                         println!("ADD I, Vx");
                         self.i = self.i + self.vx[x as usize] as u16;
+                        println!("Vx: {:X?}", self.vx);
                     },
                     // LD F, Vx
                     0x29 => {
