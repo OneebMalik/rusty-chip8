@@ -6,6 +6,8 @@ use std::fmt;
 use super::cpu;
 use super::display;
 
+use sdl2::pixels::Color;
+
 use std::collections::VecDeque;
 
 use std::{thread, time};
@@ -65,7 +67,20 @@ impl Chip8 {
             }
 
             self.cpu.execute(&mut self.ram);
+
             self.cpu.pc += 2;
+
+            if self.cpu.dt > 0 {
+                self.cpu.dt -= 1;
+            };
+
+            if self.cpu.cls {
+                self.display.canvas.set_draw_color(Color::RGB(0, 0, 0));
+                self.display.canvas.clear();
+                self.display.canvas.present();
+
+                self.cpu.cls = false;
+            }
         }
     }
 

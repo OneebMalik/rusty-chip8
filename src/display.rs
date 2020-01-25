@@ -35,7 +35,6 @@ impl Display {
      
         let window = video_subsystem.window("Rusty CHIP-8", WINDOW_WIDTH * SCALE_FACTOR, WINDOW_HEIGHT * SCALE_FACTOR)
             .position_centered()
-            .opengl()
             .build()
             .unwrap();
      
@@ -75,9 +74,10 @@ impl Display {
         // TODO: Wrap around with mod and XOR and collisions.
 
         for (index, val) in sprite.data.iter().enumerate() {
-            for bit in 0..7 {
-                if (val >> bit) as u8 & 0x01 == 1u8 {
-                    self.canvas.set_draw_color(Color::RGB(255, 255, 255));
+            for bit in 0..8 {
+                println!("x, y: {}, {:X}", bit as i32 + sprite.x, index as i32 + sprite.y);
+                if (val >> (7-bit) ) as u8 & 0x01 == 1u8 {
+                    // self.canvas.set_draw_color(Color::RGB(255, 255, 255));
                     self.canvas.fill_rect(Rect::new(
                         (bit as i32 + sprite.x) * SCALE_FACTOR as i32,
                         (index as i32 + sprite.y) * SCALE_FACTOR as i32,
@@ -85,7 +85,7 @@ impl Display {
                         SCALE_FACTOR as u32)
                     );
 
-                    println!("set COO x, y: {}, {}", (bit as i32  + sprite.x), (bit as i32 + sprite.y));
+                    // println!("set COO x, y: {}, {}", (bit as i32  + sprite.x), (bit as i32 + sprite.y));
                 }
             }
         }

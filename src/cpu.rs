@@ -15,7 +15,7 @@ pub struct Cpu {
     // stack pointer
     sp: usize,
     // delay timer
-    dt: u8,
+    pub dt: u8,
     // sound timer
     st: u8,
     // program counter
@@ -23,7 +23,9 @@ pub struct Cpu {
     //sprite queued
     pub sprite_queued: bool,
     // sprite buffer
-    pub sprite_buffer: VecDeque<sprite::Sprite>
+    pub sprite_buffer: VecDeque<sprite::Sprite>,
+    //clear screen flag
+    pub cls: bool
 }
 
 impl Cpu {
@@ -49,23 +51,24 @@ impl Cpu {
                 match instruction {
                     // CLS
                     0x00E0 => {
-                        panic!("CLS")
+                        self.cls = true;
+                        println!("CLS");
                     },
                     // RET
                     0x00EE => {
-                        panic!("RET")
+                        self.sp -= 1;
+                        self.pc = self.stack[self.sp];
+                        self.pc -= 2;
+                        println!("RET");
                     },
                     _ => panic!("Invalid instruction (0x{:X})", instruction)
                 }
             },
             0x1 => {
                 // JP addr
-                // println!("JP addr");
-                // self.stack[self.sp] = self.pc;
-                // self.sp += 1;
                 self.pc = nnn as u16;
 
-                // self.pc -= 2;
+                self.pc -= 2;
 
                 println!("JP addr");
                 // self.execute(ram);
@@ -73,6 +76,10 @@ impl Cpu {
             0x2 => {
                 self.stack[self.sp] = self.pc;
                 self.sp += 1;
+
+                self.pc = nnn as u16;
+
+                self.pc -= 2;
                 println!("CALL addr");
             },
             0x3 => {
@@ -98,7 +105,7 @@ impl Cpu {
             0x6 => {
                 // LD Vx, byte
                 self.vx[x as usize] = kk;
-                println!("LD Vx, byte {:x?}", self.vx);
+                println!("LD Vx, byte");
             },
             0x7 => {
                 // ADD Vx, byte
@@ -110,7 +117,8 @@ impl Cpu {
                 match n {
                     // LD Vx, Vy
                     0x0 => {
-                        panic!("LD Vx, Vy")
+                        self.vx[x as usize] = self.vx[y as usize];
+                        println!("LD Vx, Vy")
                     },
                     // OR Vx, Vy
                     0x1 => {
@@ -118,7 +126,8 @@ impl Cpu {
                     },
                     // AND Vx, Vy
                     0x2 => {
-                        panic!("ADD Vx, Vy")
+                        self.vx[x as usize] = self.vx[x as usize] & self.vx[y as usize];
+                        println!("AND Vx, Vy")
                     },
                     // XOR Vx, Vy
                     0x3 => {
@@ -133,8 +142,10 @@ impl Cpu {
                         panic!("SUB Vx, Vy")
                     },
                     // SHR Vx {, Vy}
+                    // TODO: SET VF properly
                     0x6 => {
-                        panic!("SHR Vx {{, Vy}}")
+                        self.vx[x as usize] = self.vx[x as usize] / 2;
+                        println!("SHR Vx {{, Vy}}")
                     },
                     // SUBN Vx, Vy
                     0x7 => {
@@ -178,14 +189,14 @@ impl Cpu {
                 let mut sprite: Vec<u8> = vec![0; n as usize];
 
                 // Read 'n' bytes from memory starting from address in I register.
-                for index in 0..sprite_size-1 {
+                for index in 0..sprite_size {
                     sprite[index as usize] = ram[(self.i + index as u16) as usize];
                 }
 
                 self.sprite_buffer.push_back(sprite::Sprite {
                     data: sprite,
-                    x: x as i32,
-                    y: y as i32
+                    x: self.vx[x as usize] as i32,
+                    y: self.vx[y as usize] as i32
                 });
                 
                 self.sprite_queued = true;
@@ -197,8 +208,10 @@ impl Cpu {
                         panic!("SKP Vx")
                     },
                     // SKNP Vx
+                    // TODO: check for key presses
                     0xA1 => {
-                        panic!("SKNP Vx")
+                        self.pc += 2;
+                        println!("SKNP Vx");
                     },
                     _ => panic!("Invalid instruction (0x{:X}).", instruction)       
                 }
@@ -207,7 +220,8 @@ impl Cpu {
                 match kk {
                     // LD Vx, DT 
                     0x07 => {
-                        panic!("LD Vx, DT")
+                        self.vx[x as usize] = self.dt;
+                        println!("LD Vx, DT")
                     },
                     // LD Vx, K
                     0x0A => {
@@ -215,7 +229,8 @@ impl Cpu {
                     },
                     // LD DT, Vx
                     0x15 => {
-                        panic!("LD DT, Vx")
+                        self.dt = self.vx[x as usize];
+                        println!("LD DT, Vx");
                     },
                     // LD ST, Vx
                     0x18 => {
@@ -225,7 +240,6 @@ impl Cpu {
                     0x1E => {
                         println!("ADD I, Vx");
                         self.i = self.i + self.vx[x as usize] as u16;
-                        println!("Vx: {:X?}", self.vx);
                     },
                     // LD F, Vx
                     0x29 => {
@@ -241,7 +255,11 @@ impl Cpu {
                     },
                     // LD Vx, [I]
                     0x65 => {
-                        panic!("LD Vx, [I]")
+                        for index in 0..x {
+                            println!("index: {}", index);
+                            panic!("wehave indeces");
+                        }
+                        println!("LD Vx, [I]")
                     },
                     _ => panic!("Invalid instruction (0x{:X}).", instruction)
                 }
@@ -250,6 +268,6 @@ impl Cpu {
         }
 
         //self.pc += 2;
-        println!("\n");
+        println!("I: {:X}, VX: {:X?} \n", self.i, self.vx);
     }
 }
