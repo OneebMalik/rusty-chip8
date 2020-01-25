@@ -220,7 +220,8 @@ impl Cpu {
                     },
                     // ADD I, Vx
                     0x1E => {
-                        ram[self.i as usize] = ram[self.i as usize] + self.vx[x as usize];
+                        println!("ADD I, Vx");
+                        self.i = self.i + self.vx[x as usize] as u16;
                     },
                     // LD F, Vx
                     0x29 => {
