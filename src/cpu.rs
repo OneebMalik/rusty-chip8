@@ -21,9 +21,9 @@ pub struct Cpu {
     // program counter
     stack: [u16; 16],
     //sprite queued
-    sprite_queued: bool,
+    pub sprite_queued: bool,
     // sprite buffer
-    sprite_buffer: VecDeque<sprite::Sprite>
+    pub sprite_buffer: VecDeque<sprite::Sprite>
 }
 
 impl Cpu {
@@ -182,8 +182,6 @@ impl Cpu {
                 });
                 
                 self.sprite_queued = true;
-
-                println!("SPRITE DATA: {:X?}", self.sprite_buffer);
             },
             0xe => {
                 match kk {

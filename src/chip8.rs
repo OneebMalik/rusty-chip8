@@ -52,30 +52,20 @@ impl Chip8 {
         // TODO: move to cpu.rs
         self.cpu.pc = PROGRAM_START_ADDR;
 
-        let mut counter = 0;
-        let ten_millis = time::Duration::from_millis(300);
-
         'main: loop {
-
-            // counter += 1;
-            // if counter > 10 {
-            //     break;
-            // }
-
-            // thread::sleep(ten_millis);
-
             if self.display.event_poll() == "quit" {
                 break 'main;
             }
 
             self.display.test();
 
-            //if self.cpu.sprite_queued {
-            //    self.display.sprite_buffer.push_back(self.cpu.sprite_buffer.pop_front().unwrap());
-            //}
+            if self.cpu.sprite_queued {
+               self.display.draw_sprite(self.cpu.sprite_buffer.pop_front().unwrap());
+                self.cpu.pc -= 2;
+            }
 
-            //self.cpu.execute(&self.ram);
-            //self.cpu.pc += 2;
+            self.cpu.execute(&self.ram);
+            self.cpu.pc += 2;
         }
     }
 

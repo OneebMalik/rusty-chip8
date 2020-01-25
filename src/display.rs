@@ -54,7 +54,6 @@ impl Display {
     }
 
     pub fn event_poll(&mut self) -> &str {
-        println!("we got to event pol");
         for event in self.event_pump.poll_iter() {
             match event {
                 Event::Quit {..} |
@@ -71,7 +70,24 @@ impl Display {
     pub fn draw_sprite(&mut self, sprite: sprite::Sprite) {
         self.canvas.set_draw_color(Color::RGB(255, 255, 255));
 
-        self.canvas.fill_rect(Rect::new(32*SCALE_FACTOR as i32, 16*SCALE_FACTOR as i32, SCALE_FACTOR as u32, SCALE_FACTOR as u32));
+        println!("SPRITE DATA: {:X?}", sprite.data);
+
+        for (index, val) in sprite.data.iter().enumerate() {
+            for bit in 0..7 {
+                if (val >> bit) as u8 & 0x01 == 1u8 {
+                    self.canvas.set_draw_color(Color::RGB(255, 255, 255));
+                    self.canvas.fill_rect(Rect::new(
+                        (bit as i32 + sprite.x) * SCALE_FACTOR as i32,
+                        (index as i32 + sprite.y) * SCALE_FACTOR as i32,
+                        SCALE_FACTOR as u32,
+                        SCALE_FACTOR as u32)
+                    );
+
+                    println!("set COO x, y: {}, {}", (bit as i32  + sprite.x), (bit as i32 + sprite.y));
+                }
+            }
+        }
+
         self.canvas.present();
     }
 
