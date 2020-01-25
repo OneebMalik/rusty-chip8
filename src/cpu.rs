@@ -28,7 +28,7 @@ pub struct Cpu {
 
 impl Cpu {
 
-    pub fn execute(&mut self, ram: &Vec<u8>) {
+    pub fn execute(&mut self, ram: &mut Vec<u8>) {
 
         let instruction = (ram[self.pc as usize] as u16) << 8 | ram[(self.pc + 1)  as usize] as u16;
 
@@ -65,7 +65,9 @@ impl Cpu {
                 self.sp += 1;
                 self.pc = nnn as u16;
 
-                self.execute(ram);
+                self.pc -= 2;
+
+                // self.execute(ram);
             },
             0x2 => {
                 // CALL addr
@@ -73,8 +75,9 @@ impl Cpu {
             },
             0x3 => {
                 // SE Vx, byte
-
-                panic!("SE Vx, byte")
+                if (self.vx[x as usize] == kk) {
+                    self.pc += 2;
+                }
             },
             0x4 => {
                 // SNE Vx, byte
@@ -217,7 +220,7 @@ impl Cpu {
                     },
                     // ADD I, Vx
                     0x1E => {
-                        panic!("ADD I, Vx")
+                        ram[self.i as usize] = ram[self.i as usize] + self.vx[x as usize];
                     },
                     // LD F, Vx
                     0x29 => {

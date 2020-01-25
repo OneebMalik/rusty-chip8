@@ -64,7 +64,7 @@ impl Chip8 {
                self.cpu.sprite_queued = false;
             }
 
-            self.cpu.execute(&self.ram);
+            self.cpu.execute(&mut self.ram);
             self.cpu.pc += 2;
         }
     }
