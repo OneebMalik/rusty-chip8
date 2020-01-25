@@ -94,7 +94,7 @@ impl Cpu {
             },
             0x6 => {
                 // LD Vx, byte
-                self.vx[x as usize] = y;
+                self.vx[x as usize] = kk;
                 println!("LD Vx, byte {:?}", self.vx);
             },
             0x7 => {

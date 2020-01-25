@@ -81,8 +81,8 @@ impl Chip8 {
             self.ram[0x200+index] = file_buf[index];
         }
 
-        //for i in 0x200..0x703 {
+        // for i in 0x200..0x703 {
         //    print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
-        //}
+        // }
     }
 }
