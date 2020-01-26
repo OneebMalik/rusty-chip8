@@ -24,7 +24,8 @@ const SCALE_FACTOR: u32 = 20;
 
 pub struct Display {
     pub canvas: Canvas<Window>,
-    event_pump: EventPump
+    event_pump: EventPump,
+    sdl_context: Sdl
 }
 
 impl Display {
@@ -48,7 +49,8 @@ impl Display {
 
         Display {
             canvas,
-            event_pump
+            event_pump,
+            sdl_context
         }
     }
 
@@ -72,6 +74,8 @@ impl Display {
         println!("SPRITE DATA: {:X?}", sprite.data);
 
         // TODO: Wrap around with mod and XOR and collisions.
+
+        println!("\n\n\n {:X?} \n\n\n", self.canvas.surface.raw());
 
         for (index, val) in sprite.data.iter().enumerate() {
             for bit in 0..8 {
