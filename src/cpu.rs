@@ -71,7 +71,6 @@ impl Cpu {
                 self.pc -= 2;
 
                 println!("JP addr");
-                // self.execute(ram);
             },
             0x2 => {
                 self.stack[self.sp] = self.pc;

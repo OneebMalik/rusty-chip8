@@ -76,16 +76,16 @@ impl Display {
         for (index, val) in sprite.data.iter().enumerate() {
             for bit in 0..8 {
                 println!("x, y: {}, {:X}", bit as i32 + sprite.x, index as i32 + sprite.y);
-                if (val >> (7-bit) ) as u8 & 0x01 == 1u8 {
-                    // self.canvas.set_draw_color(Color::RGB(255, 255, 255));
-                    self.canvas.fill_rect(Rect::new(
-                        (bit as i32 + sprite.x) * SCALE_FACTOR as i32,
-                        (index as i32 + sprite.y) * SCALE_FACTOR as i32,
-                        SCALE_FACTOR as u32,
-                        SCALE_FACTOR as u32)
-                    );
+                if (val >> (7 - bit) ) as u8 & 0x01 == 1u8 {
+                    
+                    let bit_x = ( (bit as i32 + sprite.x) % WINDOW_WIDTH as i32 );
+                    let bit_y = ( (index as i32 + sprite.y) % WINDOW_HEIGHT as i32 );
 
-                    // println!("set COO x, y: {}, {}", (bit as i32  + sprite.x), (bit as i32 + sprite.y));
+                    self.canvas.fill_rect(Rect::new(bit_x * SCALE_FACTOR as i32,
+                                                    bit_y * SCALE_FACTOR as i32, 
+                                                    SCALE_FACTOR as u32, 
+                                                    SCALE_FACTOR as u32)
+                    );
                 }
             }
         }

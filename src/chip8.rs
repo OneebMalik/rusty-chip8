@@ -74,6 +74,7 @@ impl Chip8 {
                 self.cpu.dt -= 1;
             };
 
+            // TODO: Add to flags struct
             if self.cpu.cls {
                 self.display.canvas.set_draw_color(Color::RGB(0, 0, 0));
                 self.display.canvas.clear();
