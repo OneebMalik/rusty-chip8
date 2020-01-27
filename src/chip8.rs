@@ -84,7 +84,6 @@ impl Chip8 {
             }
 
             let frame_delay = time::Duration::from_millis(5);
-            // let now = time::Instant::now();
 
             thread::sleep(frame_delay);
         }
