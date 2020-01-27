@@ -75,7 +75,7 @@ impl Display {
 
         // TODO: Wrap around with mod and XOR and collisions.
 
-        println!("\n\n\n {:X?} \n\n\n", self.canvas.surface.raw());
+        // println!("\n\n\n {:X?} \n\n\n", self.canvas.surface.raw());
 
         for (index, val) in sprite.data.iter().enumerate() {
             for bit in 0..8 {
