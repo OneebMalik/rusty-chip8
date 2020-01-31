@@ -110,7 +110,7 @@ impl Cpu {
             },
             0x7 => {
                 // ADD Vx, byte
-                self.vx[x as usize] = self.vx[x as usize] + kk;
+                self.vx[x as usize] = self.vx[x as usize].wrapping_add(kk);
                 println!("ADD Vx, byte");
             },
             0x8 => {
@@ -245,7 +245,7 @@ impl Cpu {
                     // ADD I, Vx
                     0x1E => {
                         println!("ADD I, Vx");
-                        self.i = self.i + self.vx[x as usize] as u16;
+                        self.i = self.i.wrapping_add(self.vx[x as usize] as u16);
                     },
                     // LD F, Vx
                     0x29 => {
