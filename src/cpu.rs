@@ -150,7 +150,8 @@ impl Cpu {
                     },
                     // SUB Vx, Vy
                     0x5 => {
-                        panic!("SUB Vx, Vy")
+                        self.vx[x as usize] = self.vx[x as usize].wrapping_sub(self.vx[y as usize]);
+                        println!("SUB Vx, Vy");
                     },
                     // SHR Vx {, Vy}
                     // TODO: SET VF properly
