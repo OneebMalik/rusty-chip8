@@ -96,11 +96,8 @@ impl Display {
         self.canvas.present();
     }
 
-    pub fn test(&mut self) {
-        self.canvas.set_draw_color(Color::RGB(255, 255, 255));
-
-        self.canvas.fill_rect(Rect::new(32*SCALE_FACTOR as i32, 16*SCALE_FACTOR as i32, SCALE_FACTOR as u32, SCALE_FACTOR as u32));
-        self.canvas.present();
+    pub fn draw_pixel(x, y) {
+        
     }
 }
 
