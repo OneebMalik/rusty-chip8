@@ -92,13 +92,19 @@ impl Cpu {
             },
             0x4 => {
                 // SNE Vx, byte
-                panic!("SNE Vx, byte")
+                if self.vx[x as usize] != kk {
+                    self.pc += 2;
+                }
+                println!("SNE Vx, byte");
             },
             0x5 => {
                 match n {
                     // SE Vx, Vy
                     0x0 => {
-                        panic!("SE Vx, Vy")
+                        if self.vx[x as usize] == self.vx[y as usize] {
+                            self.pc += 2;
+                        }
+                        println!("SE Vx, Vy");
                     },
                     _ => panic!("Invalid instruction (0x{:X})", instruction)
                 }
@@ -123,7 +129,8 @@ impl Cpu {
                     },
                     // OR Vx, Vy
                     0x1 => {
-                        panic!("OR Vx, Vy")
+                        self.vx[x as usize] = self.vx[x as usize] | self.vx[y as usize];
+                        println!("OR Vx, Vy");
                     },
                     // AND Vx, Vy
                     0x2 => {
@@ -132,11 +139,14 @@ impl Cpu {
                     },
                     // XOR Vx, Vy
                     0x3 => {
-                        panic!("XOR Vx, Vy")
+                        self.vx[x as usize] = self.vx[x as usize] ^ self.vx[y as usize];
+                        println!("XOR Vx, Vy");
                     },
                     // ADD Vx, Vy
                     0x4 => {
-                        panic!("ADD Vx, Vy")
+                        // TODO set vf if overflow
+                        self.vx[x as usize] = self.vx[x as usize].wrapping_add(self.vx[y as usize]);
+                        println!("ADD Vx, Vy");
                     },
                     // SUB Vx, Vy
                     0x5 => {
@@ -168,7 +178,10 @@ impl Cpu {
                 match n {
                     // SNE Vx, Vy
                     0x0 => {
-                        panic!("SNE Vx, Vy")
+                        if self.vx[x as usize] != self.vx[y as usize] {
+                            self.pc += 2;
+                        }
+                        println!("SNE Vx, Vy");
                     },
                     _ => panic!("Invalid instruction (0x{:X})", instruction)
                 }
