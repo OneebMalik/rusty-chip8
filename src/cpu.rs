@@ -62,7 +62,7 @@ impl Cpu {
                         self.pc = self.stack[self.sp];
                         println!("RET");
                     },
-                    _ => panic!("Invalid instruction (0x{:X})", instruction)
+                    _ => println!("Invalid instruction (0x{:X})", instruction)
                 }
             },
             0x1 => {
@@ -92,15 +92,15 @@ impl Cpu {
             },
             0x4 => {
                 // SNE Vx, byte
-                panic!("SNE Vx, byte")
+                println!("SNE Vx, byte")
             },
             0x5 => {
                 match n {
                     // SE Vx, Vy
                     0x0 => {
-                        panic!("SE Vx, Vy")
+                        println!("SE Vx, Vy")
                     },
-                    _ => panic!("Invalid instruction (0x{:X})", instruction)
+                    _ => println!("Invalid instruction (0x{:X})", instruction)
                 }
             },
             0x6 => {
@@ -123,7 +123,7 @@ impl Cpu {
                     },
                     // OR Vx, Vy
                     0x1 => {
-                        panic!("OR Vx, Vy")
+                        println!("OR Vx, Vy")
                     },
                     // AND Vx, Vy
                     0x2 => {
@@ -132,15 +132,15 @@ impl Cpu {
                     },
                     // XOR Vx, Vy
                     0x3 => {
-                        panic!("XOR Vx, Vy")
+                        println!("XOR Vx, Vy")
                     },
                     // ADD Vx, Vy
                     0x4 => {
-                        panic!("ADD Vx, Vy")
+                        println!("ADD Vx, Vy")
                     },
                     // SUB Vx, Vy
                     0x5 => {
-                        panic!("SUB Vx, Vy")
+                        println!("SUB Vx, Vy")
                     },
                     // SHR Vx {, Vy}
                     // TODO: SET VF properly
@@ -155,22 +155,22 @@ impl Cpu {
                     },
                     // SUBN Vx, Vy
                     0x7 => {
-                        panic!("SUBN Vx, Vy")
+                        println!("SUBN Vx, Vy")
                     },
                     // SHL Vx {, Vy}
                     0xE => {
-                        panic!("SHL Vx {{, Vy}}")
+                        println!("SHL Vx {{, Vy}}")
                     },
-                    _ => panic!("Invalid instruction (0x{:X})", instruction)
+                    _ => println!("Invalid instruction (0x{:X})", instruction)
                 }
             },
             0x9 => {
                 match n {
                     // SNE Vx, Vy
                     0x0 => {
-                        panic!("SNE Vx, Vy")
+                        println!("SNE Vx, Vy")
                     },
-                    _ => panic!("Invalid instruction (0x{:X})", instruction)
+                    _ => println!("Invalid instruction (0x{:X})", instruction)
                 }
             },
             0xa => {
@@ -180,11 +180,11 @@ impl Cpu {
             },
             0xb => {
                 // JP V0, addr
-                panic!("JP V0, addr");
+                println!("JP V0, addr");
             },
             0xc => {
                 // RND Vx, byte
-                panic!("RND Vx, byte");
+                println!("RND Vx, byte");
             },
             0xd => {
                 //DRW Vx, Vy, nibble
@@ -211,7 +211,7 @@ impl Cpu {
                 match kk {
                     // SKP Vx
                     0x9E => {
-                        panic!("SKP Vx")
+                        println!("SKP Vx")
                     },
                     // SKNP Vx
                     // TODO: check for key presses
@@ -219,7 +219,7 @@ impl Cpu {
                         self.pc += 2;
                         println!("SKNP Vx");
                     },
-                    _ => panic!("Invalid instruction (0x{:X}).", instruction)       
+                    _ => println!("Invalid instruction (0x{:X}).", instruction)       
                 }
             },
             0xf => {
@@ -231,7 +231,7 @@ impl Cpu {
                     },
                     // LD Vx, K
                     0x0A => {
-                        panic!("LD Vx, K")
+                        println!("LD Vx, K")
                     },
                     // LD DT, Vx
                     0x15 => {
@@ -240,7 +240,7 @@ impl Cpu {
                     },
                     // LD ST, Vx
                     0x18 => {
-                        panic!("LD ST, Vx")
+                        println!("LD ST, Vx")
                     },
                     // ADD I, Vx
                     0x1E => {
@@ -249,25 +249,25 @@ impl Cpu {
                     },
                     // LD F, Vx
                     0x29 => {
-                        panic!("LD F, Vx")
+                        println!("LD F, Vx")
                     },
                     // LD B, Vx
                     0x33 => {
-                        panic!("LD B, Vx")
+                        println!("LD B, Vx")
                     },
                     // LD [I], Vx
                     0x55 => {
-                        panic!("LD [I], Vx")
+                        println!("LD [I], Vx")
                     },
                     // LD Vx, [I]
                     0x65 => {
                         println!("LD Vx, [I]");
                         self.ld_reg = x as i8;
                     },
-                    _ => panic!("Invalid instruction (0x{:X}).", instruction)
+                    _ => println!("Invalid instruction (0x{:X}).", instruction)
                 }
             },
-            _ => panic!("Invalid instruction (0x{:X}).", instruction)
+            _ => println!("Invalid instruction (0x{:X}).", instruction)
         }
 
         println!("I: {:X}, VX: {:X?} \n", self.i, self.vx);
