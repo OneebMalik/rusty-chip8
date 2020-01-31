@@ -55,11 +55,13 @@ impl Chip8 {
     pub fn start(&mut self) {
 
         self.cpu.ld_reg = -1;
+        self.cpu.ld_i = -1;
+        self.cpu.font = -1;
 
         // TODO: move to cpu.rs
         self.cpu.pc = PROGRAM_START_ADDR;
 
-        let mut cycle_counter = 0;
+        // let mut cycle_counter = 0;
 
         'main: loop {
 
@@ -71,6 +73,10 @@ impl Chip8 {
                self.display.draw_sprite(self.cpu.sprite_buffer.pop_front().unwrap());
                self.cpu.sprite_queued = false;
             }
+
+            // if self.cpu.font != -1 {
+            //     self.ram[self.cpu.i] = 
+            // }
 
             // TODO: Add to flags struct
             if self.cpu.cls {
@@ -96,25 +102,35 @@ impl Chip8 {
 
                 self.cpu.i = self.cpu.i + self.cpu.ld_reg as u16 + 1;
 
-            for i in 0x25A..0x300 {
-                print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
+                for i in 0x25A..0x300 {
+                    print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
+                }
+
+                println!("{:X?}", self.cpu);
+
+                self.cpu.ld_i = -1;
             }
 
-            println!("{:X?}", self.cpu);
+            if self.cpu.ld_i != -1 {
+                for index in 0..self.cpu.ld_i {
+                    self.ram[(self.cpu.i + index as u16) as usize] = self.cpu.vx[index as usize];
+                }
 
-                self.cpu.ld_reg = -1;
+                self.cpu.i = self.cpu.i + self.cpu.ld_i as u16 + 1;
+
+                self.cpu.ld_i = -1;
             }
 
             self.cpu.execute(&mut self.ram);
 
             self.cpu.pc += 2;
 
-            cycle_counter += 1;
+            // cycle_co/unter += 1;
 
             if self.cpu.dt > 0 {
                 self.cpu.dt -= 1;
                 // cycle_counter = 0;
-            };
+            }
 
             let frame_delay = time::Duration::from_millis(16);
 

@@ -27,7 +27,10 @@ pub struct Cpu {
     //clear screen flag
     pub cls: bool,
     // LD Vx, [I]
-    pub ld_reg: i8
+    pub ld_reg: i8,
+    // LD [I], Vx
+    pub ld_i: i8,
+    pub font: i8
 }
 
 impl Cpu {
@@ -247,7 +250,7 @@ impl Cpu {
                     // LD Vx, DT 
                     0x07 => {
                         self.vx[x as usize] = self.dt;
-                        println!("LD Vx, DT")
+                        println!("LD Vx, DT");
                     },
                     // LD Vx, K
                     0x0A => {
@@ -264,8 +267,8 @@ impl Cpu {
                     },
                     // ADD I, Vx
                     0x1E => {
-                        println!("ADD I, Vx");
                         self.i = self.i.wrapping_add(self.vx[x as usize] as u16);
+                        println!("ADD I, Vx");
                     },
                     // LD F, Vx
                     0x29 => {
@@ -273,16 +276,19 @@ impl Cpu {
                     },
                     // LD B, Vx
                     0x33 => {
-                        panic!("LD B, Vx")
+                        // let self.font = self.vx[x as usize];
+
+                        println!("LD B, Vx");
                     },
                     // LD [I], Vx
                     0x55 => {
-                        panic!("LD [I], Vx")
+                        self.ld_i = x as i8;
+                        println!("LD [I], Vx");
                     },
                     // LD Vx, [I]
                     0x65 => {
-                        println!("LD Vx, [I]");
                         self.ld_reg = x as i8;
+                        println!("LD Vx, [I]");
                     },
                     _ => panic!("Invalid instruction (0x{:X}).", instruction)
                 }
