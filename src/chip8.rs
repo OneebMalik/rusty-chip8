@@ -88,6 +88,7 @@ impl Chip8 {
 
             if self.display.collision {
                 self.cpu.vx[15] = 1;
+                self.display.collision = false;
             } else {
                 self.cpu.vx[15] = 0;
             }

@@ -104,7 +104,7 @@ impl Display {
                 self.vram[((WINDOW_WIDTH * canvas_y as u32) + canvas_x as u32) as usize] = 0;
                 return;
             } else {
-                self.collision = false;
+                // self.collision = false;
 
                 self.canvas.set_draw_color(Color::RGB(255, 255, 255));
     
