@@ -1,14 +1,14 @@
 use std::fs::File;
 use std::path::Path;
 use std::io::Read;
-use std::fmt;
+// use std::fmt;
 
 use super::cpu;
 use super::display;
 
 use sdl2::pixels::Color;
 
-use std::collections::VecDeque;
+// use std::collections::VecDeque;
 
 use std::{thread, time};
 
@@ -81,7 +81,7 @@ impl Chip8 {
                 self.cpu.cls = false;
             }
 
-            let frame_delay = time::Duration::from_millis(5);
+            let frame_delay = time::Duration::from_micros(500);
 
             thread::sleep(frame_delay);
         }

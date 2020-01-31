@@ -46,7 +46,7 @@ impl Display {
         canvas.clear();
         canvas.present();
 
-        let mut event_pump = sdl_context.event_pump().unwrap();
+        let event_pump = sdl_context.event_pump().unwrap();
 
         Display {
             canvas,
@@ -80,15 +80,7 @@ impl Display {
         for (index, val) in sprite.data.iter().enumerate() {
             for bit in 0..8 {
                 if (val >> (7 - bit) ) as u8 & 0x01 == 1u8 {
-                    
-                    let bit_x = ( (bit as i32 + sprite.x) % WINDOW_WIDTH as i32 );
-                    let bit_y = ( (index as i32 + sprite.y) % WINDOW_HEIGHT as i32 );
-
-                    self.canvas.fill_rect(Rect::new(bit_x * SCALE_FACTOR as i32,
-                                                    bit_y * SCALE_FACTOR as i32, 
-                                                    SCALE_FACTOR as u32, 
-                                                    SCALE_FACTOR as u32)
-                    );
+                    self.draw_pixel(bit, index, &sprite);
                 }
             }
         }
@@ -96,8 +88,15 @@ impl Display {
         self.canvas.present();
     }
 
-    pub fn draw_pixel(x, y) {
-        
+    pub fn draw_pixel(&mut self, pos_x: usize, pos_y: usize, sprite: &sprite::Sprite) {
+        let bit_x = ( (pos_x as i32 + sprite.x) % WINDOW_WIDTH as i32 );
+        let bit_y = ( (pos_y as i32 + sprite.y) % WINDOW_HEIGHT as i32 );
+
+        self.canvas.fill_rect(Rect::new(bit_x * SCALE_FACTOR as i32,
+                                        bit_y * SCALE_FACTOR as i32, 
+                                        SCALE_FACTOR as u32, 
+                                        SCALE_FACTOR as u32)
+        );
     }
 }
 

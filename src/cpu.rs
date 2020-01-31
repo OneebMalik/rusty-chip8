@@ -84,7 +84,7 @@ impl Cpu {
             0x3 => {
                 // SE Vx, byte
                 println!("SE Vx, byte");
-                if (self.vx[x as usize] == kk) {
+                if self.vx[x as usize] == kk {
                     self.pc += 2;
                 }
             },
