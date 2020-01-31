@@ -156,13 +156,13 @@ impl Cpu {
                     // SHR Vx {, Vy}
                     // TODO: SET VF properly
                     0x6 => {
-                        if self.vx[x as usize] & 0x1 == 1 {
+                        if self.vx[y as usize] & 0x1 == 1 {
                             self.vx[15] = 1;
                         } else {
                             self.vx[15] = 0; 
                         }
-                        self.vx[x as usize] = self.vx[x as usize] / 2;
-                        println!("SHR Vx {{, Vy}}")
+                        self.vx[x as usize] = self.vx[y as usize] >> 1;
+                        println!("SHR Vx {{, Vy}}");
                     },
                     // SUBN Vx, Vy
                     0x7 => {
@@ -170,7 +170,13 @@ impl Cpu {
                     },
                     // SHL Vx {, Vy}
                     0xE => {
-                        panic!("SHL Vx {{, Vy}}")
+                        if self.vx[y as usize] >> 7 & 0x1 == 1 {
+                            self.vx[15] = 1;
+                        } else {
+                            self.vx[15] = 0; 
+                        }
+                        self.vx[x as usize] = self.vx[y as usize] << 1;
+                        println!("SHL Vx {{, Vy}}");
                     },
                     _ => panic!("Invalid instruction (0x{:X})", instruction)
                 }
