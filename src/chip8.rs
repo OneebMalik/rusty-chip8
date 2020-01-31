@@ -59,7 +59,7 @@ impl Chip8 {
                 break 'main;
             }
 
-            self.display.test();
+            //self.display.test();
 
             if self.cpu.sprite_queued {
                self.display.draw_sprite(self.cpu.sprite_buffer.pop_front().unwrap());

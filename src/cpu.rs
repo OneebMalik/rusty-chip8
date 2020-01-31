@@ -266,7 +266,6 @@ impl Cpu {
             _ => panic!("Invalid instruction (0x{:X}).", instruction)
         }
 
-        //self.pc += 2;
         println!("I: {:X}, VX: {:X?} \n", self.i, self.vx);
     }
 }

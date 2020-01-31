@@ -25,7 +25,8 @@ const SCALE_FACTOR: u32 = 20;
 pub struct Display {
     pub canvas: Canvas<Window>,
     event_pump: EventPump,
-    sdl_context: Sdl
+    sdl_context: Sdl,
+    vram: Box<[u8]>
 }
 
 impl Display {
@@ -50,7 +51,8 @@ impl Display {
         Display {
             canvas,
             event_pump,
-            sdl_context
+            sdl_context,
+            vram: vec![0u8; WINDOW_WIDTH as usize * WINDOW_HEIGHT as usize].into_boxed_slice()
         }
     }
 
@@ -71,15 +73,12 @@ impl Display {
     pub fn draw_sprite(&mut self, sprite: sprite::Sprite) {
         self.canvas.set_draw_color(Color::RGB(255, 255, 255));
 
-        println!("SPRITE DATA: {:X?}", sprite.data);
-
         // TODO: Wrap around with mod and XOR and collisions.
 
-        println!("\n\n\n {:X?} \n\n\n", self.canvas.surface.raw());
+        println!("\n\n\n {:X?} \n\n\n", self.vram);
 
         for (index, val) in sprite.data.iter().enumerate() {
             for bit in 0..8 {
-                println!("x, y: {}, {:X}", bit as i32 + sprite.x, index as i32 + sprite.y);
                 if (val >> (7 - bit) ) as u8 & 0x01 == 1u8 {
                     
                     let bit_x = ( (bit as i32 + sprite.x) % WINDOW_WIDTH as i32 );
