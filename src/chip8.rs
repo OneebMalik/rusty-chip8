@@ -3,6 +3,8 @@ use std::path::Path;
 use std::io::Read;
 // use std::fmt;
 
+use std::process;
+
 use super::cpu;
 use super::display;
 
@@ -51,6 +53,9 @@ impl Chip8 {
     }
 
     pub fn start(&mut self) {
+
+        self.cpu.ld_reg = -1;
+
         // TODO: move to cpu.rs
         self.cpu.pc = PROGRAM_START_ADDR;
 
@@ -85,6 +90,24 @@ impl Chip8 {
                 self.cpu.vx[15] = 1;
             } else {
                 self.cpu.vx[15] = 0;
+            }
+
+            if self.cpu.ld_reg != -1 {
+                for index in 0..self.cpu.ld_reg {
+                    self.cpu.vx[index as usize] = self.ram[(self.cpu.i + index as u16) as usize];
+                }
+
+                self.cpu.i = self.cpu.i + self.cpu.ld_reg as u16 + 1;
+
+                for i in 0x25A..0x300 {
+           print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
+        }
+
+            println!("{:X?}", self.cpu);
+
+            // process::exit(0);
+
+                self.cpu.ld_reg = -1;
             }
 
             let frame_delay = time::Duration::from_micros(5000);

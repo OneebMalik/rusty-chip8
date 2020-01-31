@@ -9,7 +9,7 @@ pub struct Cpu {
     // V0-VF registers. VF register reserved for instruction flags.
     pub vx: [u8; 16],
     // index pointer
-    i: u16,
+    pub i: u16,
     // program counter
     pub pc: u16,
     // stack pointer
@@ -25,7 +25,9 @@ pub struct Cpu {
     // sprite buffer
     pub sprite_buffer: VecDeque<sprite::Sprite>,
     //clear screen flag
-    pub cls: bool
+    pub cls: bool,
+    // LD Vx, [I]
+    pub ld_reg: i8
 }
 
 impl Cpu {
@@ -259,11 +261,8 @@ impl Cpu {
                     },
                     // LD Vx, [I]
                     0x65 => {
-                        for index in 0..x {
-                            println!("index: {}", index);
-                            panic!("wehave indeces");
-                        }
-                        println!("LD Vx, [I]")
+                        println!("LD Vx, [I]");
+                        self.ld_reg = x as i8;
                     },
                     _ => panic!("Invalid instruction (0x{:X}).", instruction)
                 }
