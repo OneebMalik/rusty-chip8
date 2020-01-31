@@ -69,8 +69,6 @@ impl Chip8 {
                self.cpu.sprite_queued = false;
             }
 
-            self.cpu.execute(&mut self.ram);
-
             // TODO: Add to flags struct
             if self.cpu.cls {
                 self.display.canvas.set_draw_color(Color::RGB(0, 0, 0));
@@ -94,16 +92,16 @@ impl Chip8 {
 
                 self.cpu.i = self.cpu.i + self.cpu.ld_reg as u16 + 1;
 
-                for i in 0x25A..0x300 {
-           print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
-        }
+            for i in 0x25A..0x300 {
+                print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
+            }
 
             println!("{:X?}", self.cpu);
 
-            // process::exit(0);
-
                 self.cpu.ld_reg = -1;
             }
+
+            self.cpu.execute(&mut self.ram);
 
             self.cpu.pc += 2;
 
