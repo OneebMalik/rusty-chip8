@@ -7,7 +7,7 @@ const START_ADDR: u16 = 0x200;
 #[derive(Default, Debug)]
 pub struct Cpu {
     // V0-VF registers. VF register reserved for instruction flags.
-    vx: [u8; 16],
+    pub vx: [u8; 16],
     // index pointer
     i: u16,
     // program counter
@@ -143,6 +143,11 @@ impl Cpu {
                     // SHR Vx {, Vy}
                     // TODO: SET VF properly
                     0x6 => {
+                        if self.vx[x as usize] >> 7 & 0x1 == 1 {
+                            self.vx[15] = 1;
+                        } else {
+                            self.vx[15] = 0; 
+                        }
                         self.vx[x as usize] = self.vx[x as usize] / 2;
                         println!("SHR Vx {{, Vy}}")
                     },

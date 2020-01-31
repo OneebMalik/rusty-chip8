@@ -81,7 +81,13 @@ impl Chip8 {
                 self.cpu.cls = false;
             }
 
-            let frame_delay = time::Duration::from_micros(500);
+            if self.display.collision {
+                self.cpu.vx[15] = 1;
+            } else {
+                self.cpu.vx[15] = 0;
+            }
+
+            let frame_delay = time::Duration::from_micros(5000);
 
             thread::sleep(frame_delay);
         }

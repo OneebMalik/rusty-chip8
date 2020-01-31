@@ -26,7 +26,8 @@ pub struct Display {
     pub canvas: Canvas<Window>,
     event_pump: EventPump,
     sdl_context: Sdl,
-    vram: Box<[u8]>
+    vram: Box<[u8]>,
+    pub collision: bool
 }
 
 impl Display {
@@ -52,7 +53,8 @@ impl Display {
             canvas,
             event_pump,
             sdl_context,
-            vram: vec![0u8; WINDOW_WIDTH as usize * WINDOW_HEIGHT as usize].into_boxed_slice()
+            vram: vec![0u8; WINDOW_WIDTH as usize * WINDOW_HEIGHT as usize].into_boxed_slice(),
+            collision: false
         }
     }
 
@@ -71,32 +73,50 @@ impl Display {
     }
 
     pub fn draw_sprite(&mut self, sprite: sprite::Sprite) {
-        self.canvas.set_draw_color(Color::RGB(255, 255, 255));
 
-        // TODO: Wrap around with mod and XOR and collisions.
-
-        println!("\n\n\n {:X?} \n\n\n", self.vram);
-
+        // println!("\n\n\n {:X?} \n\n\n", self.vram);
+        println!("\n\n\n {:X?} \n\n\n", sprite);
         for (index, val) in sprite.data.iter().enumerate() {
             for bit in 0..8 {
-                if (val >> (7 - bit) ) as u8 & 0x01 == 1u8 {
-                    self.draw_pixel(bit, index, &sprite);
-                }
+                self.draw_pixel(bit, index, &sprite, val);
             }
         }
 
         self.canvas.present();
     }
 
-    pub fn draw_pixel(&mut self, pos_x: usize, pos_y: usize, sprite: &sprite::Sprite) {
-        let bit_x = ( (pos_x as i32 + sprite.x) % WINDOW_WIDTH as i32 );
-        let bit_y = ( (pos_y as i32 + sprite.y) % WINDOW_HEIGHT as i32 );
+    pub fn draw_pixel(&mut self, pos_x: usize, pos_y: usize, sprite: &sprite::Sprite, val: &u8) {
+        let canvas_x = ( (pos_x as i32 + sprite.x) % WINDOW_WIDTH as i32 );
+        let canvas_y = ( (pos_y as i32 + sprite.y) % WINDOW_HEIGHT as i32 );
 
-        self.canvas.fill_rect(Rect::new(bit_x * SCALE_FACTOR as i32,
-                                        bit_y * SCALE_FACTOR as i32, 
-                                        SCALE_FACTOR as u32, 
-                                        SCALE_FACTOR as u32)
-        );
+        if (val >> (7 - pos_x) ) as u8 & 0x01 == 1u8 {
+            if self.vram[((WINDOW_WIDTH * canvas_y as u32) + canvas_x as u32) as usize] == 1 {
+                self.collision = true;
+
+                self.canvas.set_draw_color(Color::RGB(0, 0, 0));
+
+                self.canvas.fill_rect(Rect::new(canvas_x * SCALE_FACTOR as i32,
+                    canvas_y * SCALE_FACTOR as i32, 
+                    SCALE_FACTOR as u32, 
+                    SCALE_FACTOR as u32)
+                );
+
+                self.vram[((WINDOW_WIDTH * canvas_y as u32) + canvas_x as u32) as usize] = 0;
+                return;
+            } else {
+                self.collision = false;
+
+                self.canvas.set_draw_color(Color::RGB(255, 255, 255));
+    
+                self.canvas.fill_rect(Rect::new(canvas_x * SCALE_FACTOR as i32,
+                                                canvas_y * SCALE_FACTOR as i32, 
+                                                SCALE_FACTOR as u32, 
+                                                SCALE_FACTOR as u32)
+                );
+    
+                self.vram[((WINDOW_WIDTH * canvas_y as u32) + canvas_x as u32) as usize] = 1;
+            }
+        }
     }
 }
 
