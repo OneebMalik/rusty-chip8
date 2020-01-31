@@ -59,7 +59,10 @@ impl Chip8 {
         // TODO: move to cpu.rs
         self.cpu.pc = PROGRAM_START_ADDR;
 
+        let mut cycle_counter = 0;
+
         'main: loop {
+
             if self.display.event_poll() == "quit" {
                 break 'main;
             }
@@ -71,6 +74,7 @@ impl Chip8 {
 
             // TODO: Add to flags struct
             if self.cpu.cls {
+                self.display.vram = Box::default();
                 self.display.canvas.set_draw_color(Color::RGB(0, 0, 0));
                 self.display.canvas.clear();
                 self.display.canvas.present();
@@ -105,11 +109,14 @@ impl Chip8 {
 
             self.cpu.pc += 2;
 
+            cycle_counter += 1;
+
             if self.cpu.dt > 0 {
                 self.cpu.dt -= 1;
+                // cycle_counter = 0;
             };
 
-            let frame_delay = time::Duration::from_micros(5000);
+            let frame_delay = time::Duration::from_millis(16);
 
             thread::sleep(frame_delay);
         }

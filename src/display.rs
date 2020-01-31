@@ -26,7 +26,7 @@ pub struct Display {
     pub canvas: Canvas<Window>,
     event_pump: EventPump,
     sdl_context: Sdl,
-    vram: Box<[u8]>,
+    pub vram: Box<[u8]>,
     pub collision: bool
 }
 

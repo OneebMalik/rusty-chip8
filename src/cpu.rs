@@ -60,7 +60,6 @@ impl Cpu {
                     0x00EE => {
                         self.sp -= 1;
                         self.pc = self.stack[self.sp];
-                        self.pc -= 2;
                         println!("RET");
                     },
                     _ => panic!("Invalid instruction (0x{:X})", instruction)
@@ -75,6 +74,7 @@ impl Cpu {
                 println!("JP addr");
             },
             0x2 => {
+                //CALL
                 self.stack[self.sp] = self.pc;
                 self.sp += 1;
 
@@ -145,12 +145,12 @@ impl Cpu {
                     // SHR Vx {, Vy}
                     // TODO: SET VF properly
                     0x6 => {
-                        if self.vx[y as usize] & 0x1 == 1 {
+                        if self.vx[x as usize] & 0x1 == 1 {
                             self.vx[15] = 1;
                         } else {
                             self.vx[15] = 0; 
                         }
-                        self.vx[x as usize] = self.vx[y as usize] >> 1;
+                        self.vx[x as usize] = self.vx[x as usize] / 2;
                         println!("SHR Vx {{, Vy}}")
                     },
                     // SUBN Vx, Vy
