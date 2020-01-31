@@ -71,12 +71,6 @@ impl Chip8 {
 
             self.cpu.execute(&mut self.ram);
 
-            self.cpu.pc += 2;
-
-            if self.cpu.dt > 0 {
-                self.cpu.dt -= 1;
-            };
-
             // TODO: Add to flags struct
             if self.cpu.cls {
                 self.display.canvas.set_draw_color(Color::RGB(0, 0, 0));
@@ -110,6 +104,12 @@ impl Chip8 {
 
                 self.cpu.ld_reg = -1;
             }
+
+            self.cpu.pc += 2;
+
+            if self.cpu.dt > 0 {
+                self.cpu.dt -= 1;
+            };
 
             let frame_delay = time::Duration::from_micros(5000);
 
