@@ -89,8 +89,12 @@ impl Display {
         let canvas_x = ( (pos_x as i32 + sprite.x) % WINDOW_WIDTH as i32 );
         let canvas_y = ( (pos_y as i32 + sprite.y) % WINDOW_HEIGHT as i32 );
 
+        // If sprite bit is set
         if (val >> (7 - pos_x) ) as u8 & 0x01 == 1u8 {
+
+            // If there's a collision with set canvas and sprite bit
             if self.vram[((WINDOW_WIDTH * canvas_y as u32) + canvas_x as u32) as usize] == 1 {
+
                 self.collision = true;
 
                 self.canvas.set_draw_color(Color::RGB(0, 0, 0));
