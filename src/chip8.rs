@@ -59,8 +59,6 @@ impl Chip8 {
                 break 'main;
             }
 
-            //self.display.test();
-
             if self.cpu.sprite_queued {
                self.display.draw_sprite(self.cpu.sprite_buffer.pop_front().unwrap());
                self.cpu.sprite_queued = false;
@@ -82,6 +80,10 @@ impl Chip8 {
 
                 self.cpu.cls = false;
             }
+
+            let frame_delay = time::Duration::from_millis(5);
+
+            thread::sleep(frame_delay);
         }
     }
 
