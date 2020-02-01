@@ -1,3 +1,6 @@
+use rand;
+use rand::Rng;
+
 use super::sprite;
 
 use std::collections::VecDeque;
@@ -30,7 +33,8 @@ pub struct Cpu {
     pub ld_reg: i8,
     // LD [I], Vx
     pub ld_i: i8,
-    pub font: i8
+    // Flag for setting index register to associated font
+    pub load_font: i8
 }
 
 impl Cpu {
@@ -203,11 +207,15 @@ impl Cpu {
             },
             0xb => {
                 // JP V0, addr
-                panic!("JP V0, addr");
+                self.pc = nnn + self.vx[0] as u16;
+                self.pc -= 2;
+                println!("JP V0, addr");
             },
             0xc => {
                 // RND Vx, byte
-                panic!("RND Vx, byte");
+                let mut rng = rand::thread_rng();
+                self.vx[x as usize] = rng.gen::<u8>() & kk;
+                println!("RND Vx, byte");
             },
             0xd => {
                 //DRW Vx, Vy, nibble
@@ -234,7 +242,8 @@ impl Cpu {
                 match kk {
                     // SKP Vx
                     0x9E => {
-                        panic!("SKP Vx")
+                        //TODO THE WHOLE THING
+                        println!("SKP Vx");
                     },
                     // SKNP Vx
                     // TODO: check for key presses
@@ -253,8 +262,9 @@ impl Cpu {
                         println!("LD Vx, DT");
                     },
                     // LD Vx, K
+                    // TODO actually do keypress
                     0x0A => {
-                        panic!("LD Vx, K")
+                        println!("LD Vx, K");
                     },
                     // LD DT, Vx
                     0x15 => {
@@ -263,7 +273,8 @@ impl Cpu {
                     },
                     // LD ST, Vx
                     0x18 => {
-                        panic!("LD ST, Vx")
+                        self.st = self.vx[x as usize];
+                        println!("LD ST, Vx")
                     },
                     // ADD I, Vx
                     0x1E => {
@@ -272,12 +283,13 @@ impl Cpu {
                     },
                     // LD F, Vx
                     0x29 => {
-                        panic!("LD F, Vx")
+                        self.load_font = self.vx[x as usize] as i8;
+                        println!("LD F, Vx");
                     },
                     // LD B, Vx
                     0x33 => {
                         // let self.font = self.vx[x as usize];
-
+                        // TODO THE WHOLE THING
                         println!("LD B, Vx");
                     },
                     // LD [I], Vx

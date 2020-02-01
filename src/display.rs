@@ -93,7 +93,8 @@ impl Display {
         if (val >> (7 - pos_x) ) as u8 & 0x01 == 1u8 {
 
             // If there's a collision with set canvas and sprite bit
-            if self.vram[((WINDOW_WIDTH * canvas_y as u32) + canvas_x as u32) as usize] == 1 {
+            println!("VRAM: {:X?}", self.vram);
+            if self.vram[( (WINDOW_WIDTH * canvas_y as u32) + canvas_x as u32) as usize] == 1 {
 
                 self.collision = true;
 

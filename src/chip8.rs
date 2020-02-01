@@ -10,9 +10,10 @@ use super::display;
 
 use sdl2::pixels::Color;
 
-// use std::collections::VecDeque;
-
 use std::{thread, time};
+
+const WINDOW_WIDTH: u32 = 64;
+const WINDOW_HEIGHT: u32 = 32;
 
 const PROGRAM_START_ADDR: u16 = 0x200;
 
@@ -56,10 +57,21 @@ impl Chip8 {
 
         self.cpu.ld_reg = -1;
         self.cpu.ld_i = -1;
-        self.cpu.font = -1;
+        self.cpu.load_font = -1;
 
         // TODO: move to cpu.rs
         self.cpu.pc = PROGRAM_START_ADDR;
+
+        // Load font sprites into memory.
+        for (sindex, font_sprite) in CHAR_SPRITES.iter().enumerate() {
+            for (index, byte) in font_sprite.iter().enumerate() {
+                self.ram[0x50 + (5 * sindex + index)] = *byte;
+            }
+        }
+
+        // for x in 0x50..0xD0 {
+        //     println!("RAM: {:X}", self.ram[x as usize]);
+        // }
 
         // let mut cycle_counter = 0;
 
@@ -80,7 +92,7 @@ impl Chip8 {
 
             // TODO: Add to flags struct
             if self.cpu.cls {
-                self.display.vram = Box::default();
+                self.display.vram = vec![0u8; WINDOW_WIDTH as usize * WINDOW_HEIGHT as usize].into_boxed_slice();
                 self.display.canvas.set_draw_color(Color::RGB(0, 0, 0));
                 self.display.canvas.clear();
                 self.display.canvas.present();
@@ -121,11 +133,16 @@ impl Chip8 {
                 self.cpu.ld_i = -1;
             }
 
+            if self.cpu.load_font != -1 {
+                self.cpu.i = 0x50 + (5 * self.cpu.load_font) as u16;
+                self.cpu.load_font = -1;
+            }
+
             self.cpu.execute(&mut self.ram);
 
             self.cpu.pc += 2;
 
-            // cycle_co/unter += 1;
+            // cycle_counter += 1
 
             if self.cpu.dt > 0 {
                 self.cpu.dt -= 1;
