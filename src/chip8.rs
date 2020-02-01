@@ -96,23 +96,23 @@ impl Chip8 {
             }
 
             if self.cpu.ld_reg != -1 {
-                for index in 0..self.cpu.ld_reg {
+                for index in 0..=self.cpu.ld_reg {
                     self.cpu.vx[index as usize] = self.ram[(self.cpu.i + index as u16) as usize];
                 }
 
                 self.cpu.i = self.cpu.i + self.cpu.ld_reg as u16 + 1;
 
-                for i in 0x25A..0x300 {
-                    print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
-                }
+                // for i in 0x25A..0x300 {
+                //     print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
+                // }
 
-                println!("{:X?}", self.cpu);
+                // println!("{:X?}", self.cpu);
 
-                self.cpu.ld_i = -1;
+                self.cpu.ld_reg = -1;
             }
 
             if self.cpu.ld_i != -1 {
-                for index in 0..self.cpu.ld_i {
+                for index in 0..=self.cpu.ld_i {
                     self.ram[(self.cpu.i + index as u16) as usize] = self.cpu.vx[index as usize];
                 }
 
@@ -132,7 +132,7 @@ impl Chip8 {
                 // cycle_counter = 0;
             }
 
-            let frame_delay = time::Duration::from_millis(16);
+            let frame_delay = time::Duration::from_micros(500);
 
             thread::sleep(frame_delay);
         }
