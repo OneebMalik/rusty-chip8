@@ -93,7 +93,6 @@ impl Display {
         if (val >> (7 - pos_x) ) as u8 & 0x01 == 1u8 {
 
             // If there's a collision with set canvas and sprite bit
-            println!("VRAM: {:X?}", self.vram);
             if self.vram[( (WINDOW_WIDTH * canvas_y as u32) + canvas_x as u32) as usize] == 1 {
 
                 self.collision = true;
@@ -111,7 +110,7 @@ impl Display {
             } else {
                 // self.collision = false;
 
-                self.canvas.set_draw_color(Color::RGB(255, 255, 255));
+                self.canvas.set_draw_color(Color::RGB(11, 183, 74));
     
                 self.canvas.fill_rect(Rect::new(canvas_x * SCALE_FACTOR as i32,
                                                 canvas_y * SCALE_FACTOR as i32, 
