@@ -73,7 +73,7 @@ impl Chip8 {
         //     println!("RAM: {:X}", self.ram[x as usize]);
         // }
 
-        // let mut cycle_counter = 0;
+        let mut cycle_counter = 0;
 
         'main: loop {
 
@@ -142,14 +142,14 @@ impl Chip8 {
 
             self.cpu.pc += 2;
 
-            // cycle_counter += 1
+            cycle_counter += 1;
 
             if self.cpu.dt > 0 {
                 self.cpu.dt -= 1;
-                // cycle_counter = 0;
+                cycle_counter = 0;
             }
 
-            let frame_delay = time::Duration::from_micros(500);
+            let frame_delay = time::Duration::from_micros(2000);
 
             thread::sleep(frame_delay);
         }
