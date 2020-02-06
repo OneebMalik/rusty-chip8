@@ -58,66 +58,66 @@ impl Display {
         }
     }
 
-    pub fn event_poll(&mut self) -> &str {
+    pub fn event_poll(&mut self) -> i8 {
         for event in self.event_pump.poll_iter() {
             match event {
                 Event::Quit {..} |
                 Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
-                    return "quit"
+                    return -2
                 },
                 Event::KeyDown { keycode: Some(Keycode::Num1), .. } => {
-                    return "1"
+                    return 0x1
                 },
                 Event::KeyDown { keycode: Some(Keycode::Num2), .. } => {
-                    return "2"
+                    return 0x2
                 },
                 Event::KeyDown { keycode: Some(Keycode::Num3), .. } => {
-                    return "3"
+                    return 0x3
                 },
                 Event::KeyDown { keycode: Some(Keycode::Num4), .. } => {
-                    return "C"
+                    return 0xC
                 },
                 Event::KeyDown { keycode: Some(Keycode::Q), .. } => {
-                    return "4"
+                    return 0x4
                 },
                 Event::KeyDown { keycode: Some(Keycode::W), .. } => {
-                    return "5"
+                    return 0x5
                 },
                 Event::KeyDown { keycode: Some(Keycode::E), .. } => {
-                    return "6"
+                    return 0x6
                 },
                 Event::KeyDown { keycode: Some(Keycode::R), .. } => {
-                    return "D"
+                    return 0xD
                 },
                 Event::KeyDown { keycode: Some(Keycode::A), .. } => {
-                    return "7"
+                    return 0x7
                 },
                 Event::KeyDown { keycode: Some(Keycode::S), .. } => {
-                    return "8"
+                    return 0x8
                 },
                 Event::KeyDown { keycode: Some(Keycode::D), .. } => {
-                    return "9"
+                    return 0x9
                 },
                 Event::KeyDown { keycode: Some(Keycode::F), .. } => {
-                    return "E"
+                    return 0xE
                 },
                 Event::KeyDown { keycode: Some(Keycode::Z), .. } => {
-                    return "A"
+                    return 0xA
                 },
                 Event::KeyDown { keycode: Some(Keycode::X), .. } => {
-                    return "0"
+                    return 0x0
                 },
                 Event::KeyDown { keycode: Some(Keycode::C), .. } => {
-                    return "B"
+                    return 0xB
                 },
                 Event::KeyDown { keycode: Some(Keycode::V), .. } => {
-                    return "F"
+                    return 0xF
                 },
-                _ => return ""
+                _ => return -1
             };
         }
 
-        ""
+        -1
     }
 
     pub fn draw_sprite(&mut self, sprite: sprite::Sprite) {

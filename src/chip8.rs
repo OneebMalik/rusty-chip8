@@ -58,6 +58,7 @@ impl Chip8 {
         self.cpu.ld_reg = -1;
         self.cpu.ld_i = -1;
         self.cpu.load_font = -1;
+        self.cpu.key_pressed = -1;
 
         // TODO: move to cpu.rs
         self.cpu.pc = PROGRAM_START_ADDR;
@@ -75,17 +76,17 @@ impl Chip8 {
 
         let mut cycle_counter = 0;
 
-        let mut key_pressed = "";
+        let mut key_pressed = -1;
 
         'main: loop {
 
             key_pressed = self.display.event_poll();
 
-            if key_pressed == "quit" {
+            if key_pressed == -2 {
                 break 'main;
-            } else if key_pressed != "" {
+            } else if key_pressed != -1 {
                 println!("KEY PRESSED: {}", key_pressed);
-                self.cpu.key_pressed = key_pressed.to_string();
+                self.cpu.key_pressed = key_pressed;
             }
 
             if self.cpu.sprite_queued {
@@ -152,7 +153,7 @@ impl Chip8 {
                 cycle_counter = 0;
             }
 
-            let frame_delay = time::Duration::from_micros(2000);
+            let frame_delay = time::Duration::from_micros(4000);
 
             thread::sleep(frame_delay);
         }

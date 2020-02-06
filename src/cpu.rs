@@ -35,7 +35,7 @@ pub struct Cpu {
     pub ld_i: i8,
     // Flag for setting index register to associated font
     pub load_font: i8,
-    pub key_pressed: String
+    pub key_pressed: i8
 }
 
 impl Cpu {
@@ -249,10 +249,8 @@ impl Cpu {
                     // SKNP Vx
                     // TODO: check for key presses
                     0xA1 => {
-                        if self.key_pressed == "" {
+                        if self.key_pressed == -1 {
                             self.pc += 2;
-                        } else {
-                            self.key_pressed = "".to_string();
                         }
                         
                         println!("SKNP Vx");
