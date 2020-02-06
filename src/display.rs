@@ -65,6 +65,54 @@ impl Display {
                 Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
                     return "quit"
                 },
+                Event::KeyDown { keycode: Some(Keycode::Num1), .. } => {
+                    return "1"
+                },
+                Event::KeyDown { keycode: Some(Keycode::Num2), .. } => {
+                    return "2"
+                },
+                Event::KeyDown { keycode: Some(Keycode::Num3), .. } => {
+                    return "3"
+                },
+                Event::KeyDown { keycode: Some(Keycode::Num4), .. } => {
+                    return "C"
+                },
+                Event::KeyDown { keycode: Some(Keycode::Q), .. } => {
+                    return "4"
+                },
+                Event::KeyDown { keycode: Some(Keycode::W), .. } => {
+                    return "5"
+                },
+                Event::KeyDown { keycode: Some(Keycode::E), .. } => {
+                    return "6"
+                },
+                Event::KeyDown { keycode: Some(Keycode::R), .. } => {
+                    return "D"
+                },
+                Event::KeyDown { keycode: Some(Keycode::A), .. } => {
+                    return "7"
+                },
+                Event::KeyDown { keycode: Some(Keycode::S), .. } => {
+                    return "8"
+                },
+                Event::KeyDown { keycode: Some(Keycode::D), .. } => {
+                    return "9"
+                },
+                Event::KeyDown { keycode: Some(Keycode::F), .. } => {
+                    return "E"
+                },
+                Event::KeyDown { keycode: Some(Keycode::Z), .. } => {
+                    return "A"
+                },
+                Event::KeyDown { keycode: Some(Keycode::X), .. } => {
+                    return "0"
+                },
+                Event::KeyDown { keycode: Some(Keycode::C), .. } => {
+                    return "B"
+                },
+                Event::KeyDown { keycode: Some(Keycode::V), .. } => {
+                    return "F"
+                },
                 _ => return ""
             };
         }

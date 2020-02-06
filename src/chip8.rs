@@ -75,20 +75,23 @@ impl Chip8 {
 
         let mut cycle_counter = 0;
 
+        let mut key_pressed = "";
+
         'main: loop {
 
-            if self.display.event_poll() == "quit" {
+            key_pressed = self.display.event_poll();
+
+            if key_pressed == "quit" {
                 break 'main;
+            } else if key_pressed != "" {
+                println!("KEY PRESSED: {}", key_pressed);
+                self.cpu.key_pressed = key_pressed.to_string();
             }
 
             if self.cpu.sprite_queued {
                self.display.draw_sprite(self.cpu.sprite_buffer.pop_front().unwrap());
                self.cpu.sprite_queued = false;
             }
-
-            // if self.cpu.font != -1 {
-            //     self.ram[self.cpu.i] = 
-            // }
 
             // TODO: Add to flags struct
             if self.cpu.cls {
@@ -103,7 +106,7 @@ impl Chip8 {
             if self.display.collision {
                 self.cpu.vx[15] = 1;
                 self.display.collision = false;
-            } else {
+            } else {        
                 self.cpu.vx[15] = 0;
             }
 
