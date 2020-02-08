@@ -1,3 +1,5 @@
+// BIG TODO CHANGE KEYPRESS TO KEYDOWN AND KEYUP. CHECK COWGOD.
+
 use rand;
 use rand::Rng;
 
@@ -163,7 +165,14 @@ impl Cpu {
                     },
                     // SUB Vx, Vy
                     0x5 => {
-                        self.vx[x as usize] = self.vx[x as usize].wrapping_sub(self.vx[y as usize]);
+                        let sub_tuple = self.vx[x as usize].overflowing_sub(self.vx[y as usize]);
+                        self.vx[x as usize] = sub_tuple.0;
+                        if sub_tuple.1 {
+                            self.vx[0xF] = 0;
+                        } else {
+                            self.vx[0xF] = 1;
+                        }
+                        // self.vx[x as usize] = self.vx[x as usize].wrapping_sub(self.vx[y as usize]);
                         println!("SUB Vx, Vy");
                     },
                     // SHR Vx {, Vy}
@@ -273,6 +282,7 @@ impl Cpu {
                         println!("LD Vx, DT");
                     },
                     // LD Vx, K
+                    // TODO event poll until key press. dont move forward in execution
                     0x0A => {
                         if self.key_pressed == -1 {
                             self.pc -= 2;
@@ -280,7 +290,7 @@ impl Cpu {
                             self.vx[x as usize] = self.key_pressed as u8;
                             self.key_pressed = -1;
                         }
-                        println!("LD Vx, K");
+                        panic!("LD Vx, K");
                     },
                     // LD DT, Vx
                     0x15 => {
