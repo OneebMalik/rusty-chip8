@@ -152,8 +152,13 @@ impl Cpu {
                     },
                     // ADD Vx, Vy
                     0x4 => {
-                        // TODO set vf if overflow
-                        self.vx[x as usize] = self.vx[x as usize].wrapping_add(self.vx[y as usize]);
+                        let add_tuple = self.vx[x as usize].overflowing_add(self.vx[y as usize]);
+                        self.vx[x as usize] = add_tuple.0;
+                        if add_tuple.1 {
+                            self.vx[0xF] = 1;
+                        } else {
+                            self.vx[0xF] = 0;
+                        }
                         println!("ADD Vx, Vy");
                     },
                     // SUB Vx, Vy
@@ -162,12 +167,11 @@ impl Cpu {
                         println!("SUB Vx, Vy");
                     },
                     // SHR Vx {, Vy}
-                    // TODO: SET VF properly
                     0x6 => {
                         if self.vx[y as usize] & 0x1 == 1 {
-                            self.vx[15] = 1;
+                            self.vx[0xF] = 1;
                         } else {
-                            self.vx[15] = 0; 
+                            self.vx[0xF] = 0; 
                         }
                         self.vx[x as usize] = self.vx[y as usize] >> 1;
                         println!("SHR Vx {{, Vy}}");
@@ -179,9 +183,9 @@ impl Cpu {
                     // SHL Vx {, Vy}
                     0xE => {
                         if self.vx[y as usize] >> 7 & 0x1 == 1 {
-                            self.vx[15] = 1;
+                            self.vx[0xF] = 1;
                         } else {
-                            self.vx[15] = 0; 
+                            self.vx[0xF] = 0; 
                         }
                         self.vx[x as usize] = self.vx[y as usize] << 1;
                         println!("SHL Vx {{, Vy}}");
@@ -243,13 +247,16 @@ impl Cpu {
                 match kk {
                     // SKP Vx
                     0x9E => {
-                        //TODO THE WHOLE THING
+                        if self.key_pressed == self.vx[x as usize] as i8 {
+                            self.pc += 2;
+                            self.key_pressed = -1;
+                        }
+
                         println!("SKP Vx");
                     },
                     // SKNP Vx
-                    // TODO: check for key presses
                     0xA1 => {
-                        if self.key_pressed == -1 {
+                        if self.key_pressed != self.vx[x as usize] as i8 {
                             self.pc += 2;
                         }
                         
@@ -266,8 +273,13 @@ impl Cpu {
                         println!("LD Vx, DT");
                     },
                     // LD Vx, K
-                    // TODO actually do keypress
                     0x0A => {
+                        if self.key_pressed == -1 {
+                            self.pc -= 2;
+                        } else {
+                            self.vx[x as usize] = self.key_pressed as u8;
+                            self.key_pressed = -1;
+                        }
                         println!("LD Vx, K");
                     },
                     // LD DT, Vx
@@ -294,7 +306,7 @@ impl Cpu {
                     0x33 => {
                         // let self.font = self.vx[x as usize];
                         // TODO THE WHOLE THING
-                        println!("LD B, Vx");
+                        panic!("LD B, Vx");
                     },
                     // LD [I], Vx
                     0x55 => {
