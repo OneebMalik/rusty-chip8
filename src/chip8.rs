@@ -1,7 +1,8 @@
 use std::fs::File;
 use std::path::Path;
 use std::io::Read;
-// use std::fmt;
+use std::time::Instant;
+use std::time::Duration;
 
 use std::process;
 
@@ -74,9 +75,11 @@ impl Chip8 {
         //     println!("RAM: {:X}", self.ram[x as usize]);
         // }
 
-        let mut cycle_counter = 0;
+        // let mut cycle_counter = 0;
 
         let mut key_pressed = -1;
+
+        let mut start_time = Instant::now();
 
         'main: loop {
 
@@ -146,16 +149,21 @@ impl Chip8 {
 
             self.cpu.pc += 2;
 
-            cycle_counter += 1;
+            // cycle_counter += 1;
 
-            if self.cpu.dt > 0 {
+            let cycle_time = Instant::now();
+
+            println!("DURATION SINCE: {:?}", cycle_time.duration_since(start_time) > Duration::from_micros(16666));
+
+            if self.cpu.dt > 0 && cycle_time.duration_since(start_time) >= Duration::from_micros(16666) {
                 self.cpu.dt -= 1;
-                cycle_counter = 0;
+                start_time = Instant::now();
+                // cycle_counter = 0;
             }
 
-            let frame_delay = time::Duration::from_micros(4000);
+            // let frame_delay = time::Duration::from_micros(4000);
 
-            thread::sleep(frame_delay);
+            // thread::sleep(frame_delay);
         }
     }
 
