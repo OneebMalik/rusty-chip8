@@ -139,9 +139,9 @@ impl Chip8 {
 
             let cycle_time = Instant::now();
 
-            println!("DURATION SINCE: {:?}", cycle_time.duration_since(start_time) > Duration::from_micros(16666));
+            println!("DURATION SINCE: {:?}", cycle_time.duration_since(start_time) > Duration::from_micros(8333));
 
-            if self.cpu.dt > 0 && cycle_time.duration_since(start_time) >= Duration::from_micros(15000) {
+            if self.cpu.dt > 0 && cycle_time.duration_since(start_time) >= Duration::from_micros(17000) {
                 self.cpu.dt -= 1;
                 start_time = Instant::now();
             }

@@ -294,7 +294,7 @@ impl Cpu {
                             self.vx[x as usize] = self.key_pressed as u8;
                             self.key_pressed = -1;
                         }
-                        panic!("LD Vx, K");
+                        println!("LD Vx, K");
                     },
                     // LD DT, Vx
                     0x15 => {
