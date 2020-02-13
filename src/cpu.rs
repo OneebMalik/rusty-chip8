@@ -182,7 +182,9 @@ impl Cpu {
                         } else {
                             self.vx[0xF] = 0; 
                         }
-                        self.vx[x as usize] = self.vx[y as usize] >> 1;
+                        self.vx[y as usize] = self.vx[y as usize] >> 1;
+                        // self.vx[x as usize] = self.vx[y as usize] >> 1;
+                        self.vx[x as usize] = self.vx[y as usize];
                         println!("SHR Vx {{, Vy}}");
                     },
                     // SUBN Vx, Vy
@@ -196,7 +198,9 @@ impl Cpu {
                         } else {
                             self.vx[0xF] = 0; 
                         }
-                        self.vx[x as usize] = self.vx[y as usize] << 1;
+                        self.vx[y as usize] = self.vx[y as usize] << 1;
+                        // self.vx[x as usize] = self.vx[y as usize] << 1;
+                        self.vx[x as usize] = self.vx[y as usize];
                         println!("SHL Vx {{, Vy}}");
                     },
                     _ => panic!("Invalid instruction (0x{:X})", instruction)
