@@ -75,6 +75,7 @@ impl Chip8 {
 
         let mut start_time = Instant::now();
 
+        // TODO move some flag checking to cpu.
         'main: loop {
 
             key_pressed = self.display.event_poll();
@@ -139,7 +140,7 @@ impl Chip8 {
 
             let cycle_time = Instant::now();
 
-            println!("DURATION SINCE: {:?}", cycle_time.duration_since(start_time) > Duration::from_micros(8333));
+            println!("DURATION SINCE: {:?}", cycle_time.duration_since(start_time) > Duration::from_micros(17000));
 
             if self.cpu.dt > 0 && cycle_time.duration_since(start_time) >= Duration::from_micros(17000) {
                 self.cpu.dt -= 1;
