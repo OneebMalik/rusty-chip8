@@ -71,12 +71,6 @@ impl Chip8 {
             }
         }
 
-        // for x in 0x50..0xD0 {
-        //     println!("RAM: {:X}", self.ram[x as usize]);
-        // }
-
-        // let mut cycle_counter = 0;
-
         let mut key_pressed = -1;
 
         let mut start_time = Instant::now();
@@ -108,10 +102,10 @@ impl Chip8 {
             }
 
             if self.display.collision {
-                self.cpu.vx[15] = 1;
+                self.cpu.vx[0xF] = 1;
                 self.display.collision = false;
             } else {        
-                self.cpu.vx[15] = 0;
+                self.cpu.vx[0xF] = 0;
             }
 
             if self.cpu.ld_reg != -1 {
@@ -120,12 +114,6 @@ impl Chip8 {
                 }
 
                 self.cpu.i = self.cpu.i + self.cpu.ld_reg as u16 + 1;
-
-                // for i in 0x25A..0x300 {
-                //     print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
-                // }
-
-                // println!("{:X?}", self.cpu);
 
                 self.cpu.ld_reg = -1;
             }
@@ -149,21 +137,14 @@ impl Chip8 {
 
             self.cpu.pc += 2;
 
-            // cycle_counter += 1;
-
             let cycle_time = Instant::now();
 
             println!("DURATION SINCE: {:?}", cycle_time.duration_since(start_time) > Duration::from_micros(16666));
 
-            if self.cpu.dt > 0 && cycle_time.duration_since(start_time) >= Duration::from_micros(16666) {
+            if self.cpu.dt > 0 && cycle_time.duration_since(start_time) >= Duration::from_micros(15000) {
                 self.cpu.dt -= 1;
                 start_time = Instant::now();
-                // cycle_counter = 0;
             }
-
-            // let frame_delay = time::Duration::from_micros(4000);
-
-            // thread::sleep(frame_delay);
         }
     }
 
@@ -178,9 +159,5 @@ impl Chip8 {
         for (index, _) in file_buf.iter().enumerate() {
             self.ram[0x200+index] = file_buf[index];
         }
-
-        // for i in 0x200..0x703 {
-        //    print!("{:X?}: {:X?}\t\t", i, self.ram[i]);
-        // }
     }
 }
