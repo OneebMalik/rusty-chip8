@@ -37,7 +37,9 @@ pub struct Cpu {
     pub ld_i: i8,
     // Flag for setting index register to associated font
     pub load_font: i8,
-    pub key_pressed: i8
+    pub key_pressed: i8,
+    pub key_check: bool,
+    pub key_reg: usize
 }
 
 impl Cpu {
@@ -288,13 +290,15 @@ impl Cpu {
                     // LD Vx, K
                     // TODO event poll until key press. dont move forward in execution
                     0x0A => {
-                        if self.key_pressed == -1 {
-                            self.pc -= 2;
-                        } else {
-                            self.vx[x as usize] = self.key_pressed as u8;
-                            self.key_pressed = -1;
-                        }
-                        println!("LD Vx, K");
+                        self.key_check = true;
+                        self.key_reg = x as usize;
+                        // if self.key_pressed == -1 {
+                        //     self.pc -= 2;
+                        // } else {
+                        //     self.vx[x as usize] = self.key_pressed as u8;
+                        //     self.key_pressed = -1;
+                        // }
+                        panic!("LD Vx, K");
                     },
                     // LD DT, Vx
                     0x15 => {

@@ -78,6 +78,18 @@ impl Chip8 {
         // TODO move some flag checking to cpu.
         'main: loop {
 
+
+            while self.cpu.key_check {
+                key_pressed = self.display.event_poll();
+
+                if key_pressed == -2 {
+                    break 'main;
+                } else if key_pressed != -1 {
+                    self.cpu.key_check = false;
+                    self.cpu.vx[self.cpu.key_reg] = key_pressed as u8;
+                }
+            }
+
             key_pressed = self.display.event_poll();
 
             if key_pressed == -2 {
